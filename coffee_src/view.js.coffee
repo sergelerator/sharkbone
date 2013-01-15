@@ -1,5 +1,3 @@
-window.OpalExtensions = window.OpalExtensions || {}
-
 class OpalExtensions.View extends Backbone.View
   _.extend(@, OpalExtensions.Mixin)
 

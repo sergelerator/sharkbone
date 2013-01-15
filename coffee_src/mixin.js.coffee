@@ -1,5 +1,3 @@
-window.OpalExtensions = window.OpalExtensions || {}
-
 class OpalExtensions.Mixin
   @mixinCallbacks: ['beforeInclude', 'beforeExtend', 'included', 'extended']
 

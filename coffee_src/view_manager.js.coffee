@@ -1,5 +1,3 @@
-window.OpalExtensions = window.OpalExtensions || {}
-
 class OpalExtensions.ViewManager
   getDesktop: () ->
     @desktop ||= new OpalExtensions.Desktop()

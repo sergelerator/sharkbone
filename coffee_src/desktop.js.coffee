@@ -1,5 +1,3 @@
-window.OpalExtensions = window.OpalExtensions || {}
-
 class OpalExtensions.Desktop
   _.extend(@, OpalExtensions.Mixin)
 
