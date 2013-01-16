@@ -8,7 +8,6 @@ class OpalExtensions.Mixin
       @[key] = proto[key] if key not in @mixinCallbacks
     )
     proto.extended?.apply(@, proto)
-
     @
 
   @include: (obj) ->
@@ -18,5 +17,4 @@ class OpalExtensions.Mixin
       @::[key] = proto[key] if key not in @mixinCallbacks
     )
     proto.included?.apply(@, proto)
-
     @
