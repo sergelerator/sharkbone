@@ -1,1 +1,2 @@
-root.OpalExtensions = root.OpalExtensions || {}
+root.OpalExtensions =
+  Version: '0.0.1'
