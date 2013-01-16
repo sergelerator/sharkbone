@@ -1,2 +1,2 @@
-root.OpalExtensions =
+window.OpalExtensions =
   Version: '0.0.1'
