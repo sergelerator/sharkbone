@@ -1,5 +1,7 @@
 # OpalExtensions
 
+NOTE: The current version is still under development, chances are the first release is coming in the next few days...
+
 OpalExtensions was born from project needs for a controlled view managing system. It works on top of the popular javascript MVC framework BackboneJS, which means an application must be structured with BackboneJS in order to use OpalExtensions.
 
 This little library aims to make it easy to create heavy client-side applications that communicate with a RESTful API.
