@@ -1,8 +1,3 @@
-# This will add support for Backbone.RelationalModel
-baseModel = Backbone.RelationalModel || Backbone.Model
-
-class OpalExtensions.Model extends baseModel
+class OpalExtensions.Model extends (Backbone.RelationalModel || Backbone.Model)
   initialize: () ->
     super(arguments...)
-
-OpalExtensions.Model.setup() if Backbone.RelationalModel?

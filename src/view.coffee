@@ -105,14 +105,19 @@ class OpalExtensions.View extends Backbone.View
   # Render methods
   #================================================================================================
 
+  # Default render method, clears the @el property. You should always call this as
+  # super(arguments...) in each of your views.
+  render: () ->
+    @$el.html('')
+
   # Renders a template with the specified context's data
   renderData: (template, context) ->
-    @$el.html(template(context))
+    @$el.append(template(context))
     @
 
   # Renders a template with the specified model's data
   renderResource: (template, model) ->
-    @$el.html(template())
+    @$el.append(template())
     @modelBinder.bind(model, @el, @bindings())
     @
 
@@ -124,7 +129,7 @@ class OpalExtensions.View extends Backbone.View
   renderCollection: (template, collection, containerSelector) ->
     collection.fetch(
       success: () =>
-        @$el.html(template())
+        @$el.append(template())
         @collectionBinder.bind(collection, @$(containerSelector))
     )
     @
