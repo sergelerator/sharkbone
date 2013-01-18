@@ -4,7 +4,7 @@ class OpalExtensions.Model extends (Backbone.RelationalModel || Backbone.Model)
     @setupRelations()
 
   setupRelations: () ->
-    if @Backbone.RelationalModel?
+    if Backbone.RelationalModel?
       _.each(@relations, (rel) =>
         collectionUrl = @get(rel.key).url.unslash()
         @get(rel.key).url = "#{@urlRoot.unslash()}/#{@get('id')}/#{collectionUrl}"
