@@ -1,8 +1,14 @@
 # Some handy string manipulation methods.
-String::trim = () -> @replace(/^\s+|\s+$/g,"") unless String::trim?
-String::ltrim = () -> @replace(/^\s+/g,"") unless String::ltrim?
-String::rtrim = () -> @replace(/\s+$/g,"") unless String::rtrim?
-String::unslash = () -> @replace(/^\/+|\/+$/g,"") unless String::unslash?
-String::capitalize = () -> @charAt(0).toUpperCase() + @slice(1)
-String::camelize = () ->
-  _.map(@split(/\s|_|-/), (str) -> str.capitalize()).join('')
+unless String::trim?
+  String::trim = () -> @replace(/^\s+|\s+$/g,"")
+unless String::ltrim?
+  String::ltrim = () -> @replace(/^\s+/g,"")
+unless String::rtrim?
+  String::rtrim = () -> @replace(/\s+$/g,"")
+unless String::unslash?
+  String::unslash = () -> @replace(/^\/+|\/+$/g,"")
+unless String::capitalize?
+  String::capitalize = () -> @charAt(0).toUpperCase() + @slice(1)
+unless String::camelize?
+  String::camelize = () ->
+    _.map(@split(/\s|_|-/), (str) -> str.capitalize()).join('')
