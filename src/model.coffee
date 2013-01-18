@@ -3,5 +3,5 @@ class OpalExtensions.Model extends (Backbone.RelationalModel || Backbone.Model)
     super(arguments...)
     _.each(@relations, (rel) =>
       col = @get(rel.key)
-      @get(rel.key).url = "#{@urlRoot}/#{@get('id')}#{col.url}"
+      @get(rel.key).url = "#{@urlRoot.unslash()}/#{@get('id')}/#{col.url.unslash()}"
     ) if @relations?
