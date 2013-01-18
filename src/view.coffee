@@ -128,11 +128,8 @@ class OpalExtensions.View extends Backbone.View
   # This alternative render method makes use of a Backbone.CollectionBinder and will brutally
   # fail if @collectionBinder does not contain an instance of that Object.
   renderCollection: (template, collection, containerSelector) ->
-    collection.fetch(
-      success: () =>
-        @$el.append(template())
-        @collectionBinder.bind(collection, @$(containerSelector))
-    )
+    @$el.append(template())
+    @collectionBinder.bind(collection, @$(containerSelector))
     @
 
   #================================================================================================
