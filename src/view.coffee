@@ -109,6 +109,7 @@ class OpalExtensions.View extends Backbone.View
   # super(arguments...) in each of your views.
   render: () ->
     @$el.html('')
+    @
 
   # Renders a template with the specified context's data
   renderData: (template, context) ->
