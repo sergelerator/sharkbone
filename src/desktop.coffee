@@ -4,13 +4,13 @@ class OpalExtensions.Desktop
   # The layouts of the application are defined here.
   layouts:
     default:
-      main: $("#app_container #main")
-      detail: $("#app_container #detail")
-      menu: $("#app_container #main_menu")
+      main: () -> $("#app_container #main")
+      detail: () -> $("#app_container #detail")
+      menu: () -> $("#app_container #main_menu")
       forms:
-        primary: $("#app_container #primary_form")
+        primary: () -> $("#app_container #primary_form")
     login:
-      main: $("#login_container #main")
+      main: () -> $("#login_container #main")
 
   # The name of the currently active desktop layout.
   activeLayoutName: 'default'

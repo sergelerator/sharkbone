@@ -21,13 +21,13 @@ class OpalExtensions.ViewManager
 
   appMain: (view, viewData) ->
     @clearWorkSpace()
-    @renderOn(@getDesktop().layout().main, view, viewData)
+    @renderOn(@getDesktop().layout().main(), view, viewData)
 
   appDetail: (view, viewData) ->
-    @renderOn(@getDesktop().layout().detail, view, viewData)
+    @renderOn(@getDesktop().layout().detail(), view, viewData)
 
   appForm: (view, viewData) ->
-    @renderOn(@getDesktop().layout().forms.primary, view, viewData)
+    @renderOn(@getDesktop().layout().forms.primary(), view, viewData)
 
   renderOn: (container, view, viewData) ->
     $(container).html(new view(viewData).render().el)
