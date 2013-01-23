@@ -140,6 +140,7 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
     # The one method you need to call to get the HTML markup for the paginator
     #==============================================================================================
     getPager: () ->
+      return '' if @lastPage <= 1
       @getPageControl('first') + @getPageControl('prev') +
         _.map(@getDisplayPages(), @getPageNumberLink, @).join('') +
         @getPageControl('next') + @getPageControl('last')
