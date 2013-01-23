@@ -52,7 +52,13 @@ class OpalExtensions.View extends Backbone.View
 
   events:
     {
-      "click .close-self" : "close"
+      "click .close-self"         : "close"
+      "click .first-page"         : "goToFirst"
+      "click .prev-page"          : "requestPreviousPage"
+      "click .next-page"          : "requestNextPage"
+      "click .last-page"          : "goToLast"
+      "click .page-marker"        : "goToPage"
+      "click .no-page"            : "noPage"
     }
 
   #================================================================================================
@@ -131,6 +137,44 @@ class OpalExtensions.View extends Backbone.View
     @$el.append(template())
     @collectionBinder.bind(collection, @$(containerSelector))
     @
+
+  #================================================================================================
+  # Pagination
+  #
+  # Pagination event handlers are supposed to work with paginated collections. These default
+  # handlers use the Backbone.Paginator API, you need to implement your own pagination system if
+  # using that library does not please/suit you.
+  #================================================================================================
+
+  # Default handler for the prev-page event
+  requestPreviousPage: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @collection.goTo(@collection.paginator_ui.currentPage -= 1)
+
+  # Default handler for the next-page event
+  requestNextPage: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @collection.goTo(@collection.paginator_ui.currentPage += 1)
+
+  # Default handler for the page-marker event
+  goToPage: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @collection.goTo(@collection.paginator_ui.currentPage = parseInt($(e.currentTarget).attr('data-value')))
+
+  # Default handler for the first-page event
+  goToFirst: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @collection.goTo(@collection.paginator_ui.currentPage = @collection.firstPage)
+
+  # Default handler for the last-page event
+  goToLast: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @collection.goTo(@collection.paginator_ui.currentPage = @collection.lastPage)
 
   #================================================================================================
   # DOM manipulation
