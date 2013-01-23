@@ -176,6 +176,10 @@ class OpalExtensions.View extends Backbone.View
     e.stopPropagation()
     @collection.goTo(@collection.paginator_ui.currentPage = @collection.lastPage)
 
+  noPage: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+
   #================================================================================================
   # DOM manipulation
   #================================================================================================
