@@ -138,6 +138,11 @@ class OpalExtensions.View extends Backbone.View
     @collectionBinder.bind(collection, @$(containerSelector))
     @
 
+  # Renders the pagination controls of @collection on the specified `selector`
+  renderPagination: (selector = '.pagination') ->
+    $(selector).html(@collection.getPager())
+    @
+
   #================================================================================================
   # Pagination
   #
