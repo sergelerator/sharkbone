@@ -36,7 +36,7 @@ class OpalExtensions.View extends Backbone.View
   # Default options
   #================================================================================================
 
-  paginatorClass: 'paginator'
+  paginatorSelector: '.paginator'
 
   #================================================================================================
   # Defaults
@@ -146,7 +146,7 @@ class OpalExtensions.View extends Backbone.View
 
   # Renders the pagination controls of @collection on the specified `selector`
   renderPagination: () ->
-    $(".#{@paginatorClass}").html(@collection.getPager())
+    $(@paginatorSelector).html(@collection.getPager())
     @
 
   #================================================================================================
