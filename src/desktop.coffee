@@ -31,7 +31,7 @@ class OpalExtensions.Desktop
       workSpace.html('')
     else
       _.each(_.values(workSpace), (container) ->
-        container = container() if typeof workSpace is 'function'
+        container = container() if typeof container is 'function'
         container.html('') if container.html?
       )
     @afterClear(workSpace, target)
