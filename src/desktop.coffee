@@ -26,11 +26,13 @@ class OpalExtensions.Desktop
   # Clears the active layout or a sub-section of it.
   clear: (target) ->
     workSpace = if target? then @getLayout()[target] else @getLayout()
-    if workSpace().html?
-      workSpace().html('')
+    workSpace = workSpace() if typeof workSpace is 'function'
+    if workSpace.html?
+      workSpace.html('')
     else
       _.each(_.values(workSpace), (container) ->
-        container().html('') if container().html?
+        container = container() if typeof workSpace is 'function'
+        container.html('') if container.html?
       )
     @afterClear(workSpace, target)
 
