@@ -43,11 +43,11 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
       # Extend or override paginator_ui to configure the pageLinks object, which is used as
       # the options for rendering the paginator controls.
       pageLinks:
-        defaultClass: 'btn'
+        defaultClass: ''
         disabledClass: 'disabled'
         numberedPageOptions:
           class: 'page-marker'
-          selectedClass: 'btn-primary'
+          selectedClass: 'disabled'
           unselectedClass: ''
         first:
           label: '<<'
@@ -98,7 +98,7 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
     #==============================================================================================
 
     getPageNumberLink: (n) ->
-      "<a href=\"#\" class=\"#{@getPageNumberLinkClass(n)}\" data-value=\"#{n}\">#{n}</a>"
+      "<li class=\"#{@getPageNumberLinkClass(n)}\"><a href=\"#\" data-value=\"#{n}\">#{n}</a></li>"
 
     getPageNumberLinkClass: (n) ->
       "#{@pageLinks.defaultClass} #{@pageLinks.numberedPageOptions.class} #{@getExtraClassFor(n)}"
@@ -114,7 +114,7 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
     #==============================================================================================
 
     getPageControl: (control) ->
-      "<a href=\"#\" class=\"#{@getPageControlClass(control)}\">#{@pageLinks[control].label}</a>"
+      "<li class=\"#{@getPageControlClass(control)}\"><a href=\"#\">#{@pageLinks[control].label}</a></li>"
 
     getPageControlClass: (control) ->
       if @pageLinks[control].isEnabled.apply(@)
