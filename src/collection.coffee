@@ -43,6 +43,7 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
       # Extend or override paginator_ui to configure the pageLinks object, which is used as
       # the options for rendering the paginator controls.
       pageLinks:
+        wrapperTag: 'ul'
         defaultClass: ''
         disabledClass: 'disabled'
         numberedPageOptions:
@@ -141,6 +142,6 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
     #==============================================================================================
     getPager: () ->
       return '' if @lastPage <= 1
-      @getPageControl('first') + @getPageControl('prev') +
+      "<#{@pageLinks.wrapperTag}>" + @getPageControl('first') + @getPageControl('prev') +
         _.map(@getDisplayPages(), @getPageNumberLink, @).join('') +
-        @getPageControl('next') + @getPageControl('last')
+        @getPageControl('next') + @getPageControl('last') + "</#{@pageLinks.wrapperTag}>"
