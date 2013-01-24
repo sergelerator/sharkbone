@@ -36,7 +36,7 @@ class OpalExtensions.View extends Backbone.View
   # Default options
   #================================================================================================
 
-  paginatorSelector: '.paginator'
+  paginatorSelector: '.pagination'
 
   #================================================================================================
   # Defaults
