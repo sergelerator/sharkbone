@@ -99,7 +99,7 @@ class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Back
     #==============================================================================================
 
     getPageNumberLink: (n) ->
-      "<li class=\"#{@getPageNumberLinkClass(n)}\"><a href=\"#\" data-value=\"#{n}\">#{n}</a></li>"
+      "<li class=\"#{@getPageNumberLinkClass(n)}\" data-value=\"#{n}\"><a href=\"#\">#{n}</a></li>"
 
     getPageNumberLinkClass: (n) ->
       "#{@pageLinks.defaultClass} #{@pageLinks.numberedPageOptions.class} #{@getExtraClassFor(n)}"
