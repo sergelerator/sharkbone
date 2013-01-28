@@ -32,7 +32,7 @@ class OpalExtensions.Model extends (Backbone.RelationalModel || Backbone.Model)
 
     save: () ->
       #originalJSONincludings = []
-      @originalRelations = _.clone(@relations)
+      @originalRelations = _(@relations).map((rel) -> _(rel).clone())
       _.each(@relations, (rel) =>
         if (@get(rel.key).length is 0)
           #originalJSONincludings.push {rel: rel, originalValue: rel.includeInJSON}
