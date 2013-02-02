@@ -1,8 +1,8 @@
 #==================================================================================================
-# OpalExtensions.Collection
+# Sharkbone.Collection
 # Author: Sergio Morales L.
 #
-# The OpalExtensions.Collection class does not really add anything important... except if you're
+# The Sharkbone.Collection class does not really add anything important... except if you're
 # using Backbone.Paginator. If you decide to use that plug-in (which in my humble opinion, you
 # should) a lot of defaults are generated for your collections.
 #
@@ -11,7 +11,7 @@
 #
 # A `parse` function will be generated for you, this parse function can be overriden in any of
 # your collections but to properly use the default implementation, your back-end will need to form
-# a JSON objectthat looks like this:
+# a JSON object that looks like this:
 #
 # {
 #   results: [{id: 1, name: 'John', last_name: 'Doe'}, {id: 2, name: 'Foo', last_name: 'Bar'}],
@@ -22,7 +22,7 @@
 # the total number of objects stored in the server for that collection. It's that simple.
 #==================================================================================================
 
-class OpalExtensions.Collection extends (Backbone.Paginator.requestPager || Backbone.Collection)
+class Sharkbone.Collection extends (Backbone.Paginator.requestPager || Backbone.Collection)
 
   initialize: () ->
     super(arguments...)

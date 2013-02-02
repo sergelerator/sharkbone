@@ -1,5 +1,5 @@
-class OpalExtensions.Desktop
-  _.extend(@, OpalExtensions.Mixin)
+class Sharkbone.Desktop
+  _.extend(@, Sharkbone.Mixin)
 
   # The layouts of the application are defined here.
   layouts:

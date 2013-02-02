@@ -1,6 +1,6 @@
-class OpalExtensions.Model extends (Backbone.RelationalModel || Backbone.Model)
+class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
 
-  @appNamespace: () -> if Opal? then "#{Opal.AppNamespace}." else ''
+  @appNamespace: () -> if Sharkbone.AppName? then "#{Opal.AppName}." else ''
 
   initialize: () ->
     super(arguments...)

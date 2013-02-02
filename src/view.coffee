@@ -1,8 +1,8 @@
 #==================================================================================================
-# OpalExtensions.View
+# Sharkbone.View
 # Author: Sergio Morales L.
 #
-# The OpalExtensions.View class extends the basic Backbone.View to provide controlled mechanisms
+# The Sharkbone.View class extends the basic Backbone.View to provide controlled mechanisms
 # for rendering data templates, manipulate the DOM and declare data bindings between DOM elements
 # and data models/collections.
 #
@@ -22,15 +22,15 @@
 # calling super().
 #==================================================================================================
 
-class OpalExtensions.View extends Backbone.View
+class Sharkbone.View extends Backbone.View
 
   #================================================================================================
   # Setup
   #================================================================================================
 
-  _.extend(@, OpalExtensions.Mixin)
+  _.extend(@, Sharkbone.Mixin)
 
-  @include OpalExtensions.ViewManager
+  @include Sharkbone.ViewManager
 
   #================================================================================================
   # Default options
