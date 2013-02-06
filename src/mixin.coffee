@@ -1,4 +1,4 @@
-class OpalExtensions.Mixin
+class Sharkbone.Mixin
   @mixinCallbacks: ['beforeInclude', 'beforeExtend', 'included', 'extended']
 
   @extend: (obj) ->

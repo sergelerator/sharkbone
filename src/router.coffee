@@ -1,7 +1,7 @@
-class OpalExtensions.Router extends Backbone.Router
-  _.extend(@, OpalExtensions.Mixin)
+class Sharkbone.Router extends Backbone.Router
+  _.extend(@, Sharkbone.Mixin)
 
-  @include OpalExtensions.ViewManager
+  @include Sharkbone.ViewManager
 
   @defaultCollectionName: () -> @name.replace(/router|controller/gi, '')
 

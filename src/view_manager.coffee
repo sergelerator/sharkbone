@@ -1,18 +1,18 @@
 #==================================================================================================
-# OpalExtensions.ViewManager
+# Sharkbone.ViewManager
 # Author: Sergio Morales L.
 #
-# The OpalExtensions.ViewManager construct aims to provide enhanced routing and rendering
-# capabilities to both the OpalExtensions.View and OpalExtensions.Router constructs. Both of these
-# constructs get OpalExtensions.ViewManager's attributes to manipulate the shown views inside any
+# The Sharkbone.ViewManager construct aims to provide enhanced routing and rendering
+# capabilities to both the Sharkbone.View and Sharkbone.Router constructs. Both of these
+# constructs get Sharkbone.ViewManager's attributes to manipulate the shown views inside any
 # view or router.
 #==================================================================================================
 
-class OpalExtensions.ViewManager
+class Sharkbone.ViewManager
   # Use this as your desktop instance retriever, this avoids creating multiple instances of
   # Desktop and is simple to use.
   getDesktop: () ->
-    @desktop ||= new OpalExtensions.Desktop()
+    @desktop ||= new Sharkbone.Desktop()
 
   # Clears a desktop work space, if no work space is provided it will clear the entire active
   # layout. The real implementation resides in the Desktop construct, this is just a shortcut.
