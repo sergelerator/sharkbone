@@ -3,6 +3,21 @@ class OpalExtensions.Router extends Backbone.Router
 
   @include OpalExtensions.ViewManager
 
+  @defaultCollectionName: () -> @name.replace(/router|controller/gi, '')
+
+  @collectionClass: @defaultCollectionName()
+
+  @collectionName: @collectionClass.toLowerCase()
+
+  @resources: (collectionName) ->
+    collectionName ||= @collectionName
+    @::routes ||= {}
+    @::routes["#{collectionName}/index"] = 'index'
+    @::routes["#{collectionName}"] = 'index'
+    @::routes["#{collectionName}/new"] = 'newModel'
+    @::routes["#{collectionName}/:id/edit"] = 'edit'
+    @::routes["#{collectionName}/:id"] = 'show'
+
   initialize: () ->
     super(arguments...)
 
