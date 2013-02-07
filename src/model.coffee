@@ -1,6 +1,6 @@
 class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
 
-  @appNamespace: () -> if Sharkbone.AppName? then "#{Opal.AppName}." else ''
+  @appNamespace: () -> 'Sharkbone.App.'
 
   initialize: () ->
     super(arguments...)
