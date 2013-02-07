@@ -47,11 +47,18 @@ class Sharkbone.View extends Backbone.View
     _.bindAll(@)
     @_afterCreate = @_afterUpdate = @_afterDestroy = []
     @initializeDefaultCallbacks()
+    @listenTo(@collection, 'reset', @renderPagination) if @collection?
+    @modelBinder = new Backbone.ModelBinder() if Backbone.ModelBinder?
 
   initializeDefaultCallbacks: () ->
     @afterCreate @goToShow
     @afterUpdate @goToShow
     @afterDestroy @goToIndex
+
+  buildCollectionBinder: (childTemplate, bindings) ->
+    new Backbone.CollectionBinder(
+      new Backbone.CollectionBinder.ElManagerFactory(childTemplate(), bindings())
+    )
 
   bindings: () ->
     throw new Error('You must define the bindings method in your view!')
@@ -73,18 +80,21 @@ class Sharkbone.View extends Backbone.View
 
   # Attempts to create the model stored in @model and add it to the View's @collection
   create: (options) ->
+    options.preventDefault?()
     @collection.create(@model)
     @remove()
     @callbacksFor(@_afterCreate, [@model])
 
   # Attempts to update the model stored in @model
   update: (options) ->
+    options.preventDefault?()
     @model.save()
     @remove()
     @callbacksFor(@_afterUpdate, [@model])
 
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
   destroy: (id, options) ->
+    id.preventDefault?()
     if id? and @collection?
       @collection.get(id).destroy()
       @collection.remove(@collection.get(id))
