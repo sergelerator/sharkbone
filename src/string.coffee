@@ -12,3 +12,6 @@ unless String::capitalize?
 unless String::camelize?
   String::camelize = () ->
     _.map(@split(/\s|_|-/), (str) -> str.capitalize()).join('')
+unless String::underscored?
+  String::underscored = () ->
+    @replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase()
