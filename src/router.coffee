@@ -5,12 +5,12 @@ class Sharkbone.Router extends Backbone.Router
 
   @defaultCollectionName: () -> @name.replace(/router|controller/gi, '')
 
-  @collectionClass: () -> @defaultCollectionName()
+  @collectionClass: () -> @defaultCollectionName?() || @defaultCollectionName
 
-  @collectionName: () -> @collectionClass.toLowerCase()
+  @collectionName: () -> (@collectionClass?() || @collectionClass).underscored()
 
   @resources: (collectionName) ->
-    collectionName ||= @collectionName
+    collectionName ||= @collectionName?() || @collectionName
     @::routes ||= {}
     @::routes["#{collectionName}/index"] = 'index'
     @::routes["#{collectionName}"] = 'index'
