@@ -72,6 +72,8 @@ class Sharkbone.View extends Backbone.View
       "click .last-page"          : "goToLast"
       "click .page-marker"        : "goToPage"
       "click .no-page"            : "noPage"
+      "click a.show_detail"       : (e) -> e.stopPropagation()
+      "click a.edit"              : (e) -> e.stopPropagation()
     }
 
   #================================================================================================
