@@ -5,9 +5,9 @@ class Sharkbone.Router extends Backbone.Router
 
   @defaultCollectionName: () -> @name.replace(/router|controller/gi, '')
 
-  @collectionClass: @defaultCollectionName()
+  @collectionClass: () -> @defaultCollectionName()
 
-  @collectionName: @collectionClass.toLowerCase()
+  @collectionName: () -> @collectionClass.toLowerCase()
 
   @resources: (collectionName) ->
     collectionName ||= @collectionName
@@ -20,8 +20,9 @@ class Sharkbone.Router extends Backbone.Router
 
   initialize: () ->
     super(arguments...)
+    @collection = new Sharkbone.App.Collections[@constructor.collectionClass()]()
 
-  loadData: () ->
+  loadDefaultData: () ->
     @collection.fetch()
 
   getResource: (id) ->
