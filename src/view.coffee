@@ -55,14 +55,17 @@ class Sharkbone.View extends Backbone.View
     @afterCreate @goToShow
     @afterUpdate @goToShow
     @afterDestroy @goToIndex
+    @
 
   initializePaginatedCollection: () ->
-    if @collection? and @collection.getPager?
+    if @collection? and _.isFunction(@collection.getPager)
       @listenTo(@collection, 'reset', @renderPagination)
+    @
 
   initializeModelBinding: () ->
     if Backbone.ModelBinder?
       @modelBinder = new Backbone.ModelBinder()
+    @
 
   buildCollectionBinder: (childTemplate, bindings) ->
     new Backbone.CollectionBinder(
