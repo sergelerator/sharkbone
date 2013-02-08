@@ -47,13 +47,22 @@ class Sharkbone.View extends Backbone.View
     _.bindAll(@)
     @_afterCreate = @_afterUpdate = @_afterDestroy = []
     @initializeDefaultCallbacks()
-    @listenTo(@collection, 'reset', @renderPagination) if @collection?
-    @modelBinder = new Backbone.ModelBinder() if Backbone.ModelBinder?
+    @initializePaginatedCollection()
+    @initializeModelBinding()
+    @
 
   initializeDefaultCallbacks: () ->
     @afterCreate @goToShow
     @afterUpdate @goToShow
     @afterDestroy @goToIndex
+
+  initializePaginatedCollection: () ->
+    if @collection? and @collection.getPager?
+      @listenTo(@collection, 'reset', @renderPagination)
+
+  initializeModelBinding: () ->
+    if Backbone.ModelBinder?
+      @modelBinder = new Backbone.ModelBinder()
 
   buildCollectionBinder: (childTemplate, bindings) ->
     new Backbone.CollectionBinder(
