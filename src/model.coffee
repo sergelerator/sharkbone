@@ -26,7 +26,7 @@ class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
       })
       _.defaults(options, {
         relatedModel: "#{@appNamespace()}Models.#{_.singularize(key).capitalize()}"
-        collectionType: "#{@appNamespace()}Collections.#{_.pluralize(key).capitalize()}Collection"
+        collectionType: "#{@appNamespace()}Collections.#{_.pluralize(key).capitalize()}"
       })
       @::relations.push options
 

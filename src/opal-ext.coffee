@@ -20,5 +20,4 @@ window.Sharkbone =
       @activeRouters = _(@Routers).map( (router) -> new router(opts))
 
     setupBackboneRelational: () ->
-      _(@Models).each( (model) -> model.setup?() ) if Backbone.RelationalModel?
       _(@Models).invoke('setup') if Backbone.RelationalModel?
