@@ -19,5 +19,5 @@ window.Sharkbone =
       pushState: false
 
     initialize: ->
-      _(@Initializers).each((init) => init?(@options))
+      _(@Initializers).each((init) => init.call(@, @options))
       Backbone.history.start()
