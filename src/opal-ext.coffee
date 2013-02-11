@@ -6,18 +6,18 @@ window.Sharkbone =
     Views: {}
     Routers: {}
 
+    Initializers:
+      initializeRouters: (opts = @options) ->
+        @activeRouters = _(@Routers).map( (router) -> new router(opts))
+
+      setupBackboneRelational: () ->
+        _(@Models).invoke('setup') if Backbone.RelationalModel?
+
     activeRouters: []
 
     options:
       pushState: false
 
     initialize: ->
-      @initializeRouters()
-      @setupBackboneRelational()
+      _(@Initializers).each((init) => init?(@options))
       Backbone.history.start()
-
-    initializeRouters: (opts = @options) ->
-      @activeRouters = _(@Routers).map( (router) -> new router(opts))
-
-    setupBackboneRelational: () ->
-      _(@Models).invoke('setup') if Backbone.RelationalModel?
