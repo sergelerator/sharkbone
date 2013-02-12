@@ -15,3 +15,11 @@ unless String::camelize?
 unless String::underscored?
   String::underscored = () ->
     @replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase()
+unless String::army?
+  String::army = (n) ->
+    r = []
+    while(r.length < n)
+      r.push(this)
+    r.join("")
+unless String::leftFill?
+  String::leftFill = (string, resultLength) -> ( string.army(resultLength) + this ).slice(resultLength*(-1) )
