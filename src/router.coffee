@@ -20,7 +20,7 @@ class Sharkbone.Router extends Backbone.Router
 
   initialize: () ->
     super(arguments...)
-    @collection = new Sharkbone.App.Collections[@constructor.collectionClass()]()
+    @collection = new Sharkbone.App.Collections[@constructor.collectionClass()]?()
 
   loadDefaultData: () ->
     @collection.fetch()
