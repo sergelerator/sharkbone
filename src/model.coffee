@@ -43,15 +43,17 @@ class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
       })
       @::relations.push options
 
-    if Sharkbone.Config.ActiveRecord?
 
       toJSON: ->
-        attrs = _(@attributes).clone()
-        _(@relations).each((relation) =>
-          attrs["#{relation.key}_attributes"] = _(attrs[relation.key]).clone()
-          delete attrs[relation.key]
-        )
-        attrs
+        if (Sharkbone.Config.ActiveRecord? and Sharkbone.Config.ActiveRecord)
+          attrs = _(@attributes).clone()
+          _(@relations).each((relation) =>
+            attrs["#{relation.key}_attributes"] = _(attrs[relation.key]).clone()
+            delete attrs[relation.key]
+          )
+          attrs
+        else
+          super(arguments...)
 
     #save: () ->
       ##originalJSONincludings = []
