@@ -1,5 +1,6 @@
 window.Sharkbone =
   Version: '0.0.2'
+  Config: {}
   App:
     Models: {}
     Collections: {}
