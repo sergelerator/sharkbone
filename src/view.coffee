@@ -52,7 +52,9 @@ class Sharkbone.View extends Backbone.View
     @
 
   initializeDefaultCallbacks: () ->
+    @afterCreate @remove
     @afterCreate @goToShow
+    @afterUpdate @remove
     @afterUpdate @goToShow
     @afterDestroy @goToIndex
     @
@@ -96,14 +98,12 @@ class Sharkbone.View extends Backbone.View
   create: (options) ->
     options.preventDefault?()
     @collection.create(@model)
-    @remove()
     @callbacksFor(@_afterCreate, [@model])
 
   # Attempts to update the model stored in @model
   update: (options) ->
     options.preventDefault?()
     @model.save()
-    @remove()
     @callbacksFor(@_afterUpdate, [@model])
 
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
