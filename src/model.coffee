@@ -96,11 +96,13 @@ class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
     # accepts_nested_attributes_for.
     #==============================================================================================
 
-    if (Sharkbone.Config.ActiveRecord? and Sharkbone.Config.ActiveRecord)
-      toJSON: ->
+    toJSON: ->
+      if (Sharkbone.Config.ActiveRecord? and Sharkbone.Config.ActiveRecord)
         attrs = _(@attributes).clone()
         _(@relations).each((relation) =>
           attrs["#{relation.key}_attributes"] = _(attrs[relation.key]).clone()
           delete attrs[relation.key]
         )
         attrs
+      else
+        super(arguments...)
