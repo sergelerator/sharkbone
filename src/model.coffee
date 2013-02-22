@@ -66,7 +66,10 @@ class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
 
     # Call this method to fetch default collection's data. Ex. If you define some 'HasMany'
     # relations inside of your models, call this to fetch updated data from the server.
+    # NOTE: This method returns false if the model's isNew() method returns true (because it
+    # should not have fetch-able collections yet)
     fetchCollections: ->
+      return false if @isNew()
       _(@relations).chain()
         .filter((rel) => rel.type is Backbone.HasMany)
         .pluck('key')
