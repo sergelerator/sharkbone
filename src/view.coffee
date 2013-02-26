@@ -42,21 +42,18 @@ class Sharkbone.View extends Backbone.View
   # Defaults
   #================================================================================================
 
+  _afterSuccessfulCreate:   []
+  _afterSuccessfulUpdate:   []
+  _afterSuccessfulDestroy:  []
+  _afterFailingCreate:      []
+  _afterFailingUpdate:      []
+  _afterFailingDestroy:     []
+
   initialize: () ->
     super(arguments...)
     _.bindAll(@)
-    @initializeCallbackContainers()
     @initializePaginatedCollection()
     @initializeModelBinding()
-    @
-
-  initializeCallbackContainers: ->
-    @_afterSuccessfulCreate = []
-    @_afterSuccessfulUpdate = []
-    @_afterSuccessfulDestroy = []
-    @_afterFailingCreate = []
-    @_afterFailingUpdate = []
-    @_afterFailingDestroy = []
     @
 
   # Initialize some default callbacks for views.
