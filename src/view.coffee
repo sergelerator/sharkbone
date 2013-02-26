@@ -145,33 +145,33 @@ class Sharkbone.View extends Backbone.View
     )
     @
 
-  afterCreate: () ->
-    _(Array::slice.call(arguments)).each( (func) ->
+  afterCreate: ->
+    _(Array::slice.call(arguments)).each( (func) =>
       @_afterSuccessfulCreate.push(func) if typeof func is 'function'
     )
 
-  afterUpdate: (func) ->
-    _(Array::slice.call(arguments)).each( (func) ->
+  afterUpdate: ->
+    _(Array::slice.call(arguments)).each( (func) =>
       @_afterSuccessfulUpdate.push(func) if typeof func is 'function'
     )
 
-  afterDestroy: (func) ->
-    _(Array::slice.call(arguments)).each( (func) ->
+  afterDestroy: ->
+    _(Array::slice.call(arguments)).each( (func) =>
       @_afterSuccessfulDestroy.push(func) if typeof func is 'function'
     )
 
-  afterFailingCreate: (func) ->
-    _(Array::slice.call(arguments)).each( (func) ->
+  afterFailingCreate: ->
+    _(Array::slice.call(arguments)).each( (func) =>
       @_afterFailingCreate.push(func) if typeof func is 'function'
     )
 
-  afterFailingUpdate: (func) ->
-    _(Array::slice.call(arguments)).each( (func) ->
+  afterFailingUpdate: ->
+    _(Array::slice.call(arguments)).each( (func) =>
       @_afterFailingUpdate.push(func) if typeof func is 'function'
     )
 
-  afterFailingDestroy: (func) ->
-    _(Array::slice.call(arguments)).each( (func) ->
+  afterFailingDestroy: ->
+    _(Array::slice.call(arguments)).each( (func) =>
       @_afterFailingDestroy.push(func) if typeof func is 'function'
     )
 
