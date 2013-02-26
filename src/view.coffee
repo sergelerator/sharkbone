@@ -104,16 +104,16 @@ class Sharkbone.View extends Backbone.View
   create: (options) ->
     options.preventDefault?()
     @collection.create(@model, {
-      success: () => @callbackFor(@_afterSuccessfulCreate, [@model])
-      error: () => @callbackFor(@_afterFailingCreate, [@model])
+      success: () => @callbacksFor(@_afterSuccessfulCreate, [@model])
+      error: () => @callbacksFor(@_afterFailingCreate, [@model])
     })
 
   # Attempts to update the model stored in @model
   update: (options) ->
     options.preventDefault?()
     @model.save({
-      success: () => @callbackFor(@_afterSuccessfulUpdate, [@model])
-      error: () => @callbackFor(@_afterFailingUpdate, [@model])
+      success: () => @callbacksFor(@_afterSuccessfulUpdate, [@model])
+      error: () => @callbacksFor(@_afterFailingUpdate, [@model])
     })
 
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
@@ -121,14 +121,14 @@ class Sharkbone.View extends Backbone.View
     id.preventDefault?()
     if id? and @collection?
       @collection.get(id).destroy({
-        success: () => @callbackFor(@_afterSuccessfulDestroy, [@model])
-        error: () => @callbackFor(@_afterFailingDestroy, [@model])
+        success: () => @callbacksFor(@_afterSuccessfulDestroy, [@model])
+        error: () => @callbacksFor(@_afterFailingDestroy, [@model])
       })
       @collection.remove(@collection.get(id))
     else if @model?
       @model.destroy({
-        success: () => @callbackFor(@_afterSuccessfulDestroy, [@model])
-        error: () => @callbackFor(@_afterFailingDestroy, [@model])
+        success: () => @callbacksFor(@_afterSuccessfulDestroy, [@model])
+        error: () => @callbacksFor(@_afterFailingDestroy, [@model])
       })
     else throw new Error('Missing reference for destroying an object, forgot to supply an ID?')
 
