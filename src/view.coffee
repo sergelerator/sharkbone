@@ -45,12 +45,22 @@ class Sharkbone.View extends Backbone.View
   initialize: () ->
     super(arguments...)
     _.bindAll(@)
-    @_afterCreate = @_afterUpdate = @_afterDestroy = []
+    @initializeCallbackContainers()
     @initializePaginatedCollection()
     @initializeModelBinding()
     @
 
-  initializeDefaultCallbacks: () ->
+  initializeCallbackContainers: ->
+    @_afterSuccessfulCreate = []
+    @_afterSuccessfulUpdate = []
+    @_afterSuccessfulDestroy = []
+    @_afterFailingCreate = []
+    @_afterFailingUpdate = []
+    @_afterFailingDestroy = []
+    @
+
+  # Initialize some default callbacks for views.
+  initializeDefaultCallbacks: ->
     @afterCreate @remove
     @afterCreate @goToShow
     @afterUpdate @remove
@@ -58,12 +68,12 @@ class Sharkbone.View extends Backbone.View
     @afterDestroy @goToIndex
     @
 
-  initializePaginatedCollection: () ->
+  initializePaginatedCollection: ->
     if @collection? and _.isFunction(@collection.getPager)
       @listenTo(@collection, 'reset', @renderPagination)
     @
 
-  initializeModelBinding: () ->
+  initializeModelBinding: ->
     if Backbone.ModelBinder?
       @modelBinder = new Backbone.ModelBinder()
     @
@@ -73,7 +83,7 @@ class Sharkbone.View extends Backbone.View
       new Backbone.CollectionBinder.ElManagerFactory(childTemplate(), bindings())
     )
 
-  bindings: () ->
+  bindings: ->
     throw new Error('You must define the bindings method in your view!')
 
   events:
@@ -96,45 +106,74 @@ class Sharkbone.View extends Backbone.View
   # Attempts to create the model stored in @model and add it to the View's @collection
   create: (options) ->
     options.preventDefault?()
-    @collection.create(@model)
-    @callbacksFor(@_afterCreate, [@model])
+    @collection.create(@model, {
+      success: () => @callbackFor(@_afterSuccessfulCreate, [@model])
+      error: () => @callbackFor(@_afterFailingCreate, [@model])
+    })
 
   # Attempts to update the model stored in @model
   update: (options) ->
     options.preventDefault?()
-    @model.save()
-    @callbacksFor(@_afterUpdate, [@model])
+    @model.save({
+      success: () => @callbackFor(@_afterSuccessfulUpdate, [@model])
+      error: () => @callbackFor(@_afterFailingUpdate, [@model])
+    })
 
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
   destroy: (id, options) ->
     id.preventDefault?()
     if id? and @collection?
-      @collection.get(id).destroy()
+      @collection.get(id).destroy(){
+        success: () => @callbackFor(@_afterSuccessfulDestroy, [@model])
+        error: () => @callbackFor(@_afterFailingDestroy, [@model])
+      }
       @collection.remove(@collection.get(id))
     else if @model?
-      @model.destroy()
-      @remove()
+      @model.destroy({
+        success: () => @callbackFor(@_afterSuccessfulDestroy, [@model])
+        error: () => @callbackFor(@_afterFailingDestroy, [@model])
+      })
     else throw new Error('Missing reference for destroying an object, forgot to supply an ID?')
-    @callbacksFor(@_afterDestroy, [@model])
 
   #================================================================================================
   # Callback registrators
   #================================================================================================
 
   callbacksFor: (callbacksCollection, args) ->
-    _.each(callbacksCollection, (func) ->
+    _(callbacksCollection).each( (func) ->
       func.apply(@, args)
     )
     @
 
-  afterCreate: (func) ->
-    @_afterCreate.push func
+  afterCreate: () ->
+    _(Array::slice.call(arguments)).each( (func) ->
+      @_afterSuccessfulCreate.push(func) if typeof func is 'function'
+    )
 
   afterUpdate: (func) ->
-    @_afterUpdate.push func
+    _(Array::slice.call(arguments)).each( (func) ->
+      @_afterSuccessfulUpdate.push(func) if typeof func is 'function'
+    )
 
   afterDestroy: (func) ->
-    @_afterDestroy.push func
+    _(Array::slice.call(arguments)).each( (func) ->
+      @_afterSuccessfulDestroy.push(func) if typeof func is 'function'
+    )
+
+  afterFailingCreate: (func) ->
+    _(Array::slice.call(arguments)).each( (func) ->
+      @_afterFailingCreate.push(func) if typeof func is 'function'
+    )
+
+  afterFailingUpdate: (func) ->
+    _(Array::slice.call(arguments)).each( (func) ->
+      @_afterFailingUpdate.push(func) if typeof func is 'function'
+    )
+
+  afterFailingDestroy: (func) ->
+    _(Array::slice.call(arguments)).each( (func) ->
+      @_afterFailingDestroy.push(func) if typeof func is 'function'
+    )
 
   #================================================================================================
   # Render methods
