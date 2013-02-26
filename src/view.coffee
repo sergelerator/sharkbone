@@ -123,10 +123,10 @@ class Sharkbone.View extends Backbone.View
   destroy: (id, options) ->
     id.preventDefault?()
     if id? and @collection?
-      @collection.get(id).destroy(){
+      @collection.get(id).destroy({
         success: () => @callbackFor(@_afterSuccessfulDestroy, [@model])
         error: () => @callbackFor(@_afterFailingDestroy, [@model])
-      }
+      })
       @collection.remove(@collection.get(id))
     else if @model?
       @model.destroy({
