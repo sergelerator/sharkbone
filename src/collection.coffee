@@ -24,6 +24,8 @@
 
 class Sharkbone.Collection extends (Backbone.Paginator.requestPager || Backbone.Collection)
 
+  _.extend(@, Sharkbone.Mixin)
+
   initialize: () ->
     super(arguments...)
 

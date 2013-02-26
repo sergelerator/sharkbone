@@ -1,5 +1,11 @@
 class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
 
+  #==============================================================================================
+  # Setup
+  #==============================================================================================
+
+  _.extend(@, Sharkbone.Mixin)
+
   @appNamespace: () -> 'Sharkbone.App.'
 
   initialize: () ->
