@@ -46,7 +46,6 @@ class Sharkbone.View extends Backbone.View
     super(arguments...)
     _.bindAll(@)
     @_afterCreate = @_afterUpdate = @_afterDestroy = []
-    @initializeDefaultCallbacks()
     @initializePaginatedCollection()
     @initializeModelBinding()
     @
