@@ -100,7 +100,8 @@ class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
       if (Sharkbone.Config.ActiveRecord? and Sharkbone.Config.ActiveRecord)
         attrs = _(@attributes).clone()
         _(@relations).each((relation) =>
-          attrs["#{relation.key}_attributes"] = _(attrs[relation.key]).clone()
+          if (attrs[relation.key].length > 0 )
+            attrs["#{relation.key}_attributes"] = _(attrs[relation.key]).clone()
           delete attrs[relation.key]
         )
         attrs
