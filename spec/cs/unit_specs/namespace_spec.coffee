@@ -10,6 +10,14 @@ describe 'Sharkbone namespace', ->
     it 'should be defined', ->
       expect(Sharkbone.Config).toBeDefined()
 
+  describe 'Modules namespace', ->
+    it 'should be defined', ->
+      expect(Sharkbone.Modules).toBeDefined()
+
+  describe 'ClassModules namespace', ->
+    it 'should be defined', ->
+      expect(Sharkbone.ClassModules).toBeDefined()
+
   describe 'App namespace', ->
     it 'should be defined', ->
       expect(Sharkbone.App).toBeDefined()
