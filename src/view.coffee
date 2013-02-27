@@ -31,38 +31,20 @@ class Sharkbone.View extends Backbone.View
   _.extend(@, Sharkbone.Mixin)
 
   @include Sharkbone.ViewManager
-
-  #================================================================================================
-  # Default options
-  #================================================================================================
-
-  paginatorSelector: '.pagination'
+  @include Sharkbone.Modules.CUD
+  @include Sharkbone.Modules.CUDCallbacks
+  @include Sharkbone.Modules.Render
+  @include Sharkbone.Modules.PaginationControls
 
   #================================================================================================
   # Defaults
   #================================================================================================
-
-  _afterSuccessfulCreate:   []
-  _afterSuccessfulUpdate:   []
-  _afterSuccessfulDestroy:  []
-  _afterFailingCreate:      []
-  _afterFailingUpdate:      []
-  _afterFailingDestroy:     []
 
   initialize: () ->
     super(arguments...)
     _.bindAll(@)
     @initializePaginatedCollection()
     @initializeModelBinding()
-    @
-
-  # Initialize some default callbacks for views.
-  initializeDefaultCallbacks: ->
-    @afterCreate @remove
-    @afterCreate @goToShow
-    @afterUpdate @remove
-    @afterUpdate @goToShow
-    @afterDestroy @goToIndex
     @
 
   initializePaginatedCollection: ->
@@ -95,163 +77,6 @@ class Sharkbone.View extends Backbone.View
       "click a.show_detail"       : (e) -> e.stopPropagation()
       "click a.edit"              : (e) -> e.stopPropagation()
     }
-
-  #================================================================================================
-  # CUD - CRUD without the Read part
-  #================================================================================================
-
-  # Attempts to create the model stored in @model and add it to the View's @collection
-  create: (options) ->
-    options.preventDefault?()
-    options.stopPropagation?()
-    @collection.create(@model, {
-      success: () => @callbacksFor(@_afterSuccessfulCreate, [@model])
-      error: () => @callbacksFor(@_afterFailingCreate, [@model])
-    })
-
-  # Attempts to update the model stored in @model
-  update: (options) ->
-    options.preventDefault?()
-    options.stopPropagation?()
-    @model.save({
-      success: () => @callbacksFor(@_afterSuccessfulUpdate, [@model])
-      error: () => @callbacksFor(@_afterFailingUpdate, [@model])
-    })
-
-  # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
-  destroy: (id, options) ->
-    id.preventDefault?()
-    id.stopPropagation?()
-    if id? and @collection?
-      @collection.get(id).destroy({
-        success: () => @callbacksFor(@_afterSuccessfulDestroy, [@model])
-        error: () => @callbacksFor(@_afterFailingDestroy, [@model])
-      })
-      @collection.remove(@collection.get(id))
-    else if @model?
-      @model.destroy({
-        success: () => @callbacksFor(@_afterSuccessfulDestroy, [@model])
-        error: () => @callbacksFor(@_afterFailingDestroy, [@model])
-      })
-    else throw new Error('Missing reference for destroying an object, forgot to supply an ID?')
-
-  #================================================================================================
-  # Callback registrators
-  #================================================================================================
-
-  callbacksFor: (callbacksCollection, args) ->
-    _(callbacksCollection).each( (func) ->
-      func.apply(@, args)
-    )
-    @
-
-  afterCreate: ->
-    _(Array::slice.call(arguments)).each( (func) =>
-      @_afterSuccessfulCreate.push(func) if typeof func is 'function'
-    )
-
-  afterUpdate: ->
-    _(Array::slice.call(arguments)).each( (func) =>
-      @_afterSuccessfulUpdate.push(func) if typeof func is 'function'
-    )
-
-  afterDestroy: ->
-    _(Array::slice.call(arguments)).each( (func) =>
-      @_afterSuccessfulDestroy.push(func) if typeof func is 'function'
-    )
-
-  afterFailingCreate: ->
-    _(Array::slice.call(arguments)).each( (func) =>
-      @_afterFailingCreate.push(func) if typeof func is 'function'
-    )
-
-  afterFailingUpdate: ->
-    _(Array::slice.call(arguments)).each( (func) =>
-      @_afterFailingUpdate.push(func) if typeof func is 'function'
-    )
-
-  afterFailingDestroy: ->
-    _(Array::slice.call(arguments)).each( (func) =>
-      @_afterFailingDestroy.push(func) if typeof func is 'function'
-    )
-
-  #================================================================================================
-  # Render methods
-  #================================================================================================
-
-  # Default render method, clears the @el property. You should always call this as
-  # super(arguments...) in each of your views.
-  render: () ->
-    @$el.html('')
-    @
-
-  # Renders a template with the specified context's data
-  renderData: (template, context) ->
-    @$el.append(template(context))
-    @
-
-  # Renders a template with the specified model's data
-  renderResource: (template, model) ->
-    @$el.append(template())
-    @modelBinder.bind(model, @el, @bindings())
-    @
-
-  # Renders a template using a collection of data, useful for rendering a list of data.
-  # A jQuery containerSelector is used to append each of the list's items, this selector would
-  # usually be a tbody or a div element.
-  # This alternative render method makes use of a Backbone.CollectionBinder and will brutally
-  # fail if @collectionBinder does not contain an instance of that Object.
-  renderCollection: (template, collection, containerSelector) ->
-    @$el.append(template())
-    @collectionBinder.bind(collection, @$(containerSelector))
-    @
-
-  # Renders the pagination controls of @collection on the specified `selector`
-  renderPagination: () ->
-    $(@paginatorSelector).html(@collection.getPager())
-    @
-
-  #================================================================================================
-  # Pagination
-  #
-  # Pagination event handlers are supposed to work with paginated collections. These default
-  # handlers use the Backbone.Paginator API, you need to implement your own pagination system if
-  # using that library does not please/suit you.
-  #================================================================================================
-
-  # Default handler for the prev-page event
-  requestPreviousPage: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    @collection.goTo(@collection.paginator_ui.currentPage -= 1)
-
-  # Default handler for the next-page event
-  requestNextPage: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    @collection.goTo(@collection.paginator_ui.currentPage += 1)
-
-  # Default handler for the page-marker event
-  goToPage: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    @collection.goTo(@collection.paginator_ui.currentPage = parseInt($(e.currentTarget).attr('data-value')))
-
-  # Default handler for the first-page event
-  goToFirst: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    @collection.goTo(@collection.paginator_ui.currentPage = @collection.firstPage)
-
-  # Default handler for the last-page event
-  goToLast: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    @collection.goTo(@collection.paginator_ui.currentPage = @collection.lastPage)
-
-  noPage: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
 
   #================================================================================================
   # DOM manipulation
