@@ -2,8 +2,54 @@
 (function() {
 
   describe('Sharkbone namespace', function() {
-    return it('should be defined', function() {
+    it('should be defined', function() {
       return expect(Sharkbone).toEqual(jasmine.any(Object));
+    });
+    describe('Version', function() {
+      return it('should be defined', function() {
+        return expect(Sharkbone.Version).toBeTruthy();
+      });
+    });
+    describe('Config namespace', function() {
+      return it('should be defined', function() {
+        return expect(Sharkbone.Config).toEqual(jasmine.any(Object));
+      });
+    });
+    return describe('App namespace', function() {
+      it('should be defined', function() {
+        return expect(Sharkbone.App).toEqual(jasmine.any(Object));
+      });
+      describe('Models namespace', function() {
+        return it('should be defined', function() {
+          return expect(Sharkbone.App.Models).toEqual(jasmine.any(Object));
+        });
+      });
+      describe('Collections namespace', function() {
+        return it('should be defined', function() {
+          return expect(Sharkbone.App.Collections).toEqual(jasmine.any(Object));
+        });
+      });
+      describe('Views namespace', function() {
+        return it('should be defined', function() {
+          return expect(Sharkbone.App.Views).toEqual(jasmine.any(Object));
+        });
+      });
+      describe('Routers namespace', function() {
+        return it('should be defined', function() {
+          return expect(Sharkbone.App.Routers).toEqual(jasmine.any(Object));
+        });
+      });
+      return describe('Initializers', function() {
+        it('should be defined', function() {
+          return expect(Sharkbone.App.Initializers).toEqual(jasmine.any(Object));
+        });
+        it('should have a initializeRouters method', function() {
+          return expect(Sharkbone.App.Initializers.initializeRouters).toEqual(jasmine.any(Function));
+        });
+        return it('should have a setupBackboneRelational method', function() {
+          return expect(Sharkbone.App.Initializers.setupBackboneRelational).toEqual(jasmine.any(Function));
+        });
+      });
     });
   });
 
