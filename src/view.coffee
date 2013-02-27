@@ -103,6 +103,7 @@ class Sharkbone.View extends Backbone.View
   # Attempts to create the model stored in @model and add it to the View's @collection
   create: (options) ->
     options.preventDefault?()
+    options.stopPropagation?()
     @collection.create(@model, {
       success: () => @callbacksFor(@_afterSuccessfulCreate, [@model])
       error: () => @callbacksFor(@_afterFailingCreate, [@model])
@@ -111,6 +112,7 @@ class Sharkbone.View extends Backbone.View
   # Attempts to update the model stored in @model
   update: (options) ->
     options.preventDefault?()
+    options.stopPropagation?()
     @model.save({
       success: () => @callbacksFor(@_afterSuccessfulUpdate, [@model])
       error: () => @callbacksFor(@_afterFailingUpdate, [@model])
@@ -119,6 +121,7 @@ class Sharkbone.View extends Backbone.View
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
   destroy: (id, options) ->
     id.preventDefault?()
+    id.stopPropagation?()
     if id? and @collection?
       @collection.get(id).destroy({
         success: () => @callbacksFor(@_afterSuccessfulDestroy, [@model])
