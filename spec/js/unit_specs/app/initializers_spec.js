@@ -59,8 +59,50 @@
       });
     });
     return describe('setupBackboneRelational', function() {
-      return it('should be a function', function() {
+      it('should be a function', function() {
         return expect(subject.setupBackboneRelational).toEqual(jasmine.any(Function));
+      });
+      it('should have access to Sharkbone.Model', function() {
+        return expect(Sharkbone.Model).toBeDefined();
+      });
+      return describe('called from Sharkbone.App context', function() {
+        beforeEach(function() {
+          Sharkbone.App.Models.First = (function(_super) {
+
+            __extends(First, _super);
+
+            function First() {
+              First.__super__.constructor.apply(this, arguments);
+            }
+
+            return First;
+
+          })(Sharkbone.Model);
+          Sharkbone.App.Models.Second = (function(_super) {
+
+            __extends(Second, _super);
+
+            function Second() {
+              Second.__super__.constructor.apply(this, arguments);
+            }
+
+            return Second;
+
+          })(Sharkbone.Model);
+          spyOn(Sharkbone.App.Models.First, 'setup');
+          return spyOn(Sharkbone.App.Models.Second, 'setup');
+        });
+        afterEach(function() {
+          return Sharkbone.App.Models = {};
+        });
+        it('should setup the First Model', function() {
+          subject.setupBackboneRelational.apply(Sharkbone.App);
+          return expect(Sharkbone.App.Models.First.setup).toHaveBeenCalled();
+        });
+        return it('should setup the Second Model', function() {
+          subject.setupBackboneRelational.apply(Sharkbone.App);
+          return expect(Sharkbone.App.Models.Second.setup).toHaveBeenCalled();
+        });
       });
     });
   });

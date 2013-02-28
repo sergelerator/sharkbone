@@ -36,3 +36,25 @@ describe 'Initializers', ->
   describe 'setupBackboneRelational', ->
     it 'should be a function', ->
       expect(subject.setupBackboneRelational).toEqual jasmine.any Function
+
+    it 'should have access to Sharkbone.Model', ->
+      expect(Sharkbone.Model).toBeDefined()
+
+    describe 'called from Sharkbone.App context', ->
+      beforeEach ->
+        class Sharkbone.App.Models.First extends Sharkbone.Model
+        class Sharkbone.App.Models.Second extends Sharkbone.Model
+
+        spyOn Sharkbone.App.Models.First, 'setup'
+        spyOn Sharkbone.App.Models.Second, 'setup'
+
+      afterEach ->
+        Sharkbone.App.Models = {}
+
+      it 'should setup the First Model', ->
+        subject.setupBackboneRelational.apply(Sharkbone.App)
+        expect(Sharkbone.App.Models.First.setup).toHaveBeenCalled()
+
+      it 'should setup the Second Model', ->
+        subject.setupBackboneRelational.apply(Sharkbone.App)
+        expect(Sharkbone.App.Models.Second.setup).toHaveBeenCalled()
