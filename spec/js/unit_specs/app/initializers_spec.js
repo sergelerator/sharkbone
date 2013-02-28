@@ -54,7 +54,6 @@
         });
         return it('should create an activeRouters attribute with 2 routers', function() {
           subject.initializeRouters.apply(Sharkbone.App);
-          expect(Sharkbone.App.activeRouters).toBeDefined();
           return expect(Sharkbone.App.activeRouters.length).toEqual(2);
         });
       });
