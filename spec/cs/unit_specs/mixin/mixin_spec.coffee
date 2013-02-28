@@ -7,7 +7,7 @@ describe 'Mixin', ->
   describe 'Class methods', ->
     beforeEach ->
       class root.TestBase
-        _(@).extend(subject)
+        _(@).extend subject
 
         varOne: 1
         varTwo: 2
@@ -49,15 +49,15 @@ describe 'Mixin', ->
 
       it 'should be a function', ->
         expect(subject.extend).toBeDefined()
-        expect(subject.extend).toEqual jasmine.any(Function)
+        expect(subject.extend).toEqual jasmine.any Function
 
       it 'should extend an object\'s attributes', ->
         expect(TestBase.varThree).toBeDefined()
         expect(TestBase.varFour).toBeDefined()
 
       it 'should extend an object\'s methods', ->
-        expect(TestBase.methThree).toEqual jasmine.any(Function)
-        expect(TestBase.methFour).toEqual jasmine.any(Function)
+        expect(TestBase.methThree).toEqual jasmine.any Function
+        expect(TestBase.methFour).toEqual jasmine.any Function
 
       it 'should have called the beforeExtend method', ->
         expect(TestExtendable::beforeExtend).toHaveBeenCalled()
@@ -70,7 +70,7 @@ describe 'Mixin', ->
 
         it 'should extend from a bare object', ->
           expect(TestBase.varFive).toBeDefined()
-          expect(TestBase.methFive).toEqual jasmine.any(Function)
+          expect(TestBase.methFive).toEqual jasmine.any Function
 
         it 'should have the extended object\'s methods implementation', ->
           expect(TestBase.methFive()).toEqual 5
@@ -86,15 +86,15 @@ describe 'Mixin', ->
 
       it 'should be a function', ->
         expect(subject.include).toBeDefined()
-        expect(subject.include).toEqual jasmine.any(Function)
+        expect(subject.include).toEqual jasmine.any Function
 
       it 'should include an object\'s attributes in it\'s prototype', ->
         expect(TestBase::varThree).toBeDefined()
         expect(TestBase::varFour).toBeDefined()
 
       it 'should include an object\'s methods in it\'s prototype', ->
-        expect(TestBase::methThree).toEqual jasmine.any(Function)
-        expect(TestBase::methFour).toEqual jasmine.any(Function)
+        expect(TestBase::methThree).toEqual jasmine.any Function
+        expect(TestBase::methFour).toEqual jasmine.any Function
 
       it 'should have called the beforeInclude method', ->
         expect(TestExtendable::beforeInclude).toHaveBeenCalled()
@@ -107,7 +107,7 @@ describe 'Mixin', ->
 
         it 'should include from a bare object', ->
           expect(TestBase::varFive).toBeDefined()
-          expect(TestBase::methFive).toEqual jasmine.any(Function)
+          expect(TestBase::methFive).toEqual jasmine.any Function
 
         it 'should have the extended object\'s methods implementation', ->
           expect(TestBase::methFive()).toEqual 5

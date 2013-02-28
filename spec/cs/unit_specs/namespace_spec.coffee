@@ -43,7 +43,7 @@ describe 'Sharkbone namespace', ->
         expect(Sharkbone.App.Initializers).toBeDefined()
 
       it 'should have an initializeRouters method', ->
-        expect(Sharkbone.App.Initializers.initializeRouters).toEqual jasmine.any(Function)
+        expect(Sharkbone.App.Initializers.initializeRouters).toEqual jasmine.any Function
 
       it 'should have a setupBackboneRelational method', ->
-        expect(Sharkbone.App.Initializers.setupBackboneRelational).toEqual jasmine.any(Function)
+        expect(Sharkbone.App.Initializers.setupBackboneRelational).toEqual jasmine.any Function

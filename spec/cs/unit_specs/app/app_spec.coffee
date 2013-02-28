@@ -10,7 +10,7 @@ describe 'App', ->
 
   describe 'options', ->
     it 'should be an object', ->
-      expect(subject.options).toEqual jasmine.any(Object)
+      expect(subject.options).toEqual jasmine.any Object
 
     it 'should have a pushState attribute with a falsy value', ->
       expect(subject.options.pushState).toBeFalsy()
@@ -20,4 +20,4 @@ describe 'App', ->
       expect(subject.initialize).toBeDefined()
 
     it 'should be a function', ->
-      expect(subject.initialize).toEqual jasmine.any(Function)
+      expect(subject.initialize).toEqual jasmine.any Function
