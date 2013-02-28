@@ -1,4 +1,5 @@
-window.Sharkbone =
+root = @
+root.Sharkbone =
   Version: '0.0.2'
   Config: {}
   Modules: {}
