@@ -38,30 +38,80 @@
         return expect(subject.prototype._afterFailingDestroy).toEqual([]);
       });
     });
-    describe('afterCreate', function() {
+    describe('callbacks', function() {
       beforeEach(function() {
         spyOn(subject.prototype, 'registerCallback').andCallThrough();
         spyOn(subject.prototype, 'registerCallbacks').andCallThrough();
-        spyOn(subject.prototype, 'afterCreate').andCallThrough();
-        subject.prototype.mockCallback = jasmine.createSpy('mockCallback').andReturn(1);
-        return subject.prototype.afterCreate(subject.prototype.mockCallback);
+        return subject.prototype.mockCallback = jasmine.createSpy('mockCallback').andReturn(1);
       });
-      it('should be called with an emptyFunction', function() {
-        expect(subject.prototype.afterCreate).toHaveBeenCalled();
-        return expect(subject.prototype.afterCreate).toHaveBeenCalledWith(subject.prototype.mockCallback);
-      });
-      it('registerCallbacks properly called', function() {
-        expect(subject.prototype.registerCallbacks).toHaveBeenCalled();
-        return expect(subject.prototype.registerCallbacks).toHaveBeenCalledWith(subject.prototype._afterSuccessfulCreate, {
-          0: subject.prototype.mockCallback
+      describe('afterCreate', function() {
+        beforeEach(function() {
+          spyOn(subject.prototype, 'afterCreate').andCallThrough();
+          return subject.prototype.afterCreate(subject.prototype.mockCallback);
+        });
+        it('should be called with a mockCallback', function() {
+          expect(subject.prototype.afterCreate).toHaveBeenCalled();
+          return expect(subject.prototype.afterCreate).toHaveBeenCalledWith(subject.prototype.mockCallback);
+        });
+        it('registerCallbacks properly called', function() {
+          expect(subject.prototype.registerCallbacks).toHaveBeenCalled();
+          return expect(subject.prototype.registerCallbacks).toHaveBeenCalledWith(subject.prototype._afterSuccessfulCreate, {
+            0: subject.prototype.mockCallback
+          });
+        });
+        it('registerCallback properly called', function() {
+          return expect(subject.prototype.registerCallback).toHaveBeenCalledWith(subject.prototype._afterSuccessfulCreate, subject.prototype.mockCallback);
+        });
+        return it('should add mockCallback to _afterSuccessfulCreate', function() {
+          expect(subject.prototype._afterSuccessfulCreate.length).toEqual(1);
+          return expect(subject.prototype._afterSuccessfulCreate[0]).toEqual(subject.prototype.mockCallback);
         });
       });
-      it('registerCallback properly called', function() {
-        return expect(subject.prototype.registerCallback).toHaveBeenCalledWith(subject.prototype._afterSuccessfulCreate, subject.prototype.mockCallback);
+      describe('afterUpdate', function() {
+        beforeEach(function() {
+          spyOn(subject.prototype, 'afterUpdate').andCallThrough();
+          return subject.prototype.afterUpdate(subject.prototype.mockCallback);
+        });
+        it('should be called with a mockCallback', function() {
+          expect(subject.prototype.afterUpdate).toHaveBeenCalled();
+          return expect(subject.prototype.afterUpdate).toHaveBeenCalledWith(subject.prototype.mockCallback);
+        });
+        it('registerCallbacks properly called', function() {
+          expect(subject.prototype.registerCallbacks).toHaveBeenCalled();
+          return expect(subject.prototype.registerCallbacks).toHaveBeenCalledWith(subject.prototype._afterSuccessfulUpdate, {
+            0: subject.prototype.mockCallback
+          });
+        });
+        it('registerCallback properly called', function() {
+          return expect(subject.prototype.registerCallback).toHaveBeenCalledWith(subject.prototype._afterSuccessfulUpdate, subject.prototype.mockCallback);
+        });
+        return it('should add mockCallback to _afterSuccessfulUpdate', function() {
+          expect(subject.prototype._afterSuccessfulUpdate.length).toEqual(1);
+          return expect(subject.prototype._afterSuccessfulUpdate[0]).toEqual(subject.prototype.mockCallback);
+        });
       });
-      return it('should add mockCallback to _afterSuccessfulCreate', function() {
-        expect(subject.prototype._afterSuccessfulCreate.length).toEqual(1);
-        return expect(subject.prototype._afterSuccessfulCreate[0]).toEqual(subject.prototype.mockCallback);
+      return describe('afterDestroy', function() {
+        beforeEach(function() {
+          spyOn(subject.prototype, 'afterDestroy').andCallThrough();
+          return subject.prototype.afterDestroy(subject.prototype.mockCallback);
+        });
+        it('should be called with a mockCallback', function() {
+          expect(subject.prototype.afterDestroy).toHaveBeenCalled();
+          return expect(subject.prototype.afterDestroy).toHaveBeenCalledWith(subject.prototype.mockCallback);
+        });
+        it('registerCallbacks properly called', function() {
+          expect(subject.prototype.registerCallbacks).toHaveBeenCalled();
+          return expect(subject.prototype.registerCallbacks).toHaveBeenCalledWith(subject.prototype._afterSuccessfulDestroy, {
+            0: subject.prototype.mockCallback
+          });
+        });
+        it('registerCallback properly called', function() {
+          return expect(subject.prototype.registerCallback).toHaveBeenCalledWith(subject.prototype._afterSuccessfulDestroy, subject.prototype.mockCallback);
+        });
+        return it('should add mockCallback to _afterSuccessfulDestroy', function() {
+          expect(subject.prototype._afterSuccessfulDestroy.length).toEqual(1);
+          return expect(subject.prototype._afterSuccessfulDestroy[0]).toEqual(subject.prototype.mockCallback);
+        });
       });
     });
     return describe('initializeDefaultCallbacks', function() {
