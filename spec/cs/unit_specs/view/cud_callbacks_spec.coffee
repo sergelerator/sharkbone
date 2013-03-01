@@ -14,8 +14,8 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
     subject.goToIndex = jasmine.createSpy('goToIndex').andReturn 1
     subject.goToShow = jasmine.createSpy('goToShow').andReturn 1
 
-    #server = sinon.fakeServer.create()
-    #server.autoRespond = true
+    server = sinon.fakeServer.create()
+    server.autoRespond = true
 
   afterEach ->
     server.restore()
@@ -63,10 +63,10 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         subject.afterCreate subject.successCallback
         subject.afterFailingCreate subject.errorCallback
 
-        #server.respondWith('POST', '/users.json',
-          #[200, {'Content-Tpye': 'application/json'},
-          #'{name: John, last_name: Doe}']
-        #)
+        server.respondWith('POST', 'users',
+          [201, {'Content-Tpye': 'application/json'},
+          '{name: John, last_name: Doe}']
+        )
 
       it 'should be called with a successCallback', ->
         expect(subject.afterCreate).toHaveBeenCalled()
@@ -89,6 +89,7 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       it 'should call successCallback afterCreate', ->
         subject.model.set name: 'John', last_name: 'Doe'
         subject.create()
+        console.log server
         expect(subject.successCallback).toHaveBeenCalled()
 
     describe 'afterUpdate', ->

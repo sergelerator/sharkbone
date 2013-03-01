@@ -16,7 +16,9 @@
       subject._afterFailingDestroy = [];
       subject.remove = jasmine.createSpy('remove').andReturn(1);
       subject.goToIndex = jasmine.createSpy('goToIndex').andReturn(1);
-      return subject.goToShow = jasmine.createSpy('goToShow').andReturn(1);
+      subject.goToShow = jasmine.createSpy('goToShow').andReturn(1);
+      server = sinon.fakeServer.create();
+      return server.autoRespond = true;
     });
     afterEach(function() {
       return server.restore();
@@ -91,7 +93,12 @@
         beforeEach(function() {
           spyOn(subject, 'afterCreate').andCallThrough();
           subject.afterCreate(subject.successCallback);
-          return subject.afterFailingCreate(subject.errorCallback);
+          subject.afterFailingCreate(subject.errorCallback);
+          return server.respondWith('POST', 'users', [
+            201, {
+              'Content-Tpye': 'application/json'
+            }, '{name: John, last_name: Doe}'
+          ]);
         });
         it('should be called with a successCallback', function() {
           expect(subject.afterCreate).toHaveBeenCalled();
@@ -115,6 +122,7 @@
             last_name: 'Doe'
           });
           subject.create();
+          console.log(server);
           return expect(subject.successCallback).toHaveBeenCalled();
         });
       });
