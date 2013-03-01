@@ -15,7 +15,7 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
     subject.goToShow = jasmine.createSpy('goToShow').andReturn 1
 
     server = sinon.fakeServer.create()
-    server.autoRespond = true
+    #server.autoRespond = true
 
   afterEach ->
     server.restore()
@@ -51,15 +51,18 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
 
       spyOn(subject, 'registerCallback').andCallThrough()
       spyOn(subject, 'registerCallbacks').andCallThrough()
+      spyOn(subject, 'callbacksFor').andCallThrough()
       subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> console.log('success')
       subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake (model, xhr, options) -> console.log(arguments)
       subject.collection = new Sharkbone.App.Collections.Users()
       subject.model = new Sharkbone.App.Models.User()
+      subject.model.set name: 'John', last_name: 'Doe'
       _(subject).extend Sharkbone.Modules.CUD
 
     describe 'afterCreate', ->
       beforeEach ->
         spyOn(subject, 'afterCreate').andCallThrough()
+        spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterCreate subject.successCallback
         subject.afterFailingCreate subject.errorCallback
 
@@ -87,10 +90,21 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         expect(subject._afterSuccessfulCreate[0]).toEqual subject.successCallback
 
       it 'should call successCallback afterCreate', ->
-        subject.model.set name: 'John', last_name: 'Doe'
         subject.create()
-        console.log server
+        server.respond()
         expect(subject.successCallback).toHaveBeenCalled()
+
+      it 'should call runCallbacksFor with proper arguments', ->
+        subject.create()
+        server.respond()
+        console.log subject._afterSuccessfulCreate
+        console.log subject.successCallback
+        expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback])
+
+      it 'should call callbacksFor with proper arguments', ->
+        subject.create()
+        server.respond()
+        expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback])
 
     describe 'afterUpdate', ->
       beforeEach ->

@@ -17,8 +17,7 @@
       subject.remove = jasmine.createSpy('remove').andReturn(1);
       subject.goToIndex = jasmine.createSpy('goToIndex').andReturn(1);
       subject.goToShow = jasmine.createSpy('goToShow').andReturn(1);
-      server = sinon.fakeServer.create();
-      return server.autoRespond = true;
+      return server = sinon.fakeServer.create();
     });
     afterEach(function() {
       return server.restore();
@@ -79,6 +78,7 @@
         Sharkbone.App.Models.User.setup();
         spyOn(subject, 'registerCallback').andCallThrough();
         spyOn(subject, 'registerCallbacks').andCallThrough();
+        spyOn(subject, 'callbacksFor').andCallThrough();
         subject.successCallback = jasmine.createSpy('successCallback').andCallFake(function() {
           return console.log('success');
         });
@@ -87,11 +87,16 @@
         });
         subject.collection = new Sharkbone.App.Collections.Users();
         subject.model = new Sharkbone.App.Models.User();
+        subject.model.set({
+          name: 'John',
+          last_name: 'Doe'
+        });
         return _(subject).extend(Sharkbone.Modules.CUD);
       });
       describe('afterCreate', function() {
         beforeEach(function() {
           spyOn(subject, 'afterCreate').andCallThrough();
+          spyOn(subject, 'runCallbacksFor').andCallThrough();
           subject.afterCreate(subject.successCallback);
           subject.afterFailingCreate(subject.errorCallback);
           return server.respondWith('POST', 'users', [
@@ -116,14 +121,22 @@
           expect(subject._afterSuccessfulCreate.length).toEqual(1);
           return expect(subject._afterSuccessfulCreate[0]).toEqual(subject.successCallback);
         });
-        return it('should call successCallback afterCreate', function() {
-          subject.model.set({
-            name: 'John',
-            last_name: 'Doe'
-          });
+        it('should call successCallback afterCreate', function() {
           subject.create();
-          console.log(server);
+          server.respond();
           return expect(subject.successCallback).toHaveBeenCalled();
+        });
+        it('should call runCallbacksFor with proper arguments', function() {
+          subject.create();
+          server.respond();
+          console.log(subject._afterSuccessfulCreate);
+          console.log(subject.successCallback);
+          return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback]);
+        });
+        return it('should call callbacksFor with proper arguments', function() {
+          subject.create();
+          server.respond();
+          return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback]);
         });
       });
       describe('afterUpdate', function() {
