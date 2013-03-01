@@ -5,7 +5,7 @@
 # described here. They provide shortcuts for defining Model relationships. Just like
 # ActiveRecord's has_many and such. Yippie.
 #==================================================================================================
-class Sharkbone.ClassModules.Relational
+Sharkbone.ClassModules.Relational =
   #==============================================================================================
   # Relation describers
   #==============================================================================================

@@ -5,22 +5,23 @@
     var subject;
     subject = Sharkbone.ClassModules.Relational;
     beforeEach(function() {
-      return subject.appNamespace = jasmine.createSpy('appNamespace').andReturn('Sharkbone.App.');
+      subject.appNamespace = jasmine.createSpy('appNamespace').andReturn('Sharkbone.App.');
+      return subject.prototype = {};
     });
     it('should be defined', function() {
       return expect(subject).toBeDefined();
     });
     describe('hasMany', function() {
       it('should be defined', function() {
-        return expect(subject.prototype.hasMany).toBeDefined();
+        return expect(subject.hasMany).toBeDefined();
       });
       it('should raise an exception when called without a key', function() {
-        return expect(subject.prototype.hasMany).toThrow();
+        return expect(subject.hasMany).toThrow();
       });
       describe('sons collection', function() {
         beforeEach(function() {
           subject.prototype.relations = null;
-          return subject.prototype.hasMany.call(subject, 'sons');
+          return subject.hasMany.call(subject, 'sons');
         });
         it('should add a key to prototype.relation', function() {
           return expect(subject.prototype.relations.length).toEqual(1);
@@ -37,7 +38,7 @@
       return describe('children collection', function() {
         beforeEach(function() {
           subject.prototype.relations = null;
-          return subject.prototype.hasMany.call(subject, 'children', {
+          return subject.hasMany.call(subject, 'children', {
             collectionType: 'Sharkbone.App.Collections.Children'
           });
         });
@@ -56,15 +57,15 @@
     });
     return describe('hasOne', function() {
       it('should be defined', function() {
-        return expect(subject.prototype.hasOne).toBeDefined();
+        return expect(subject.hasOne).toBeDefined();
       });
       it('should raise an exception when called without a key', function() {
-        return expect(subject.prototype.hasOne).toThrow();
+        return expect(subject.hasOne).toThrow();
       });
       describe('related possession', function() {
         beforeEach(function() {
           subject.prototype.relations = null;
-          return subject.prototype.hasOne.call(subject, 'possession');
+          return subject.hasOne.call(subject, 'possession');
         });
         it('should add a key to prototype.relation', function() {
           return expect(subject.prototype.relations.length).toEqual(1);
@@ -80,7 +81,7 @@
       return describe('related task', function() {
         beforeEach(function() {
           subject.prototype.relations = null;
-          return subject.prototype.hasOne.call(subject, 'task', {
+          return subject.hasOne.call(subject, 'task', {
             relatedModel: 'Sharkbone.App.Models.Chore'
           });
         });

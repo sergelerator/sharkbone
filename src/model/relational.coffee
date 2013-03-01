@@ -5,7 +5,7 @@
 # Sharkbone.Model extends from Backbone.RelationalModel and because of that... you should not
 # use them if for some reason Backbone.RelationalModel is left out of the build.
 #==================================================================================================
-class Sharkbone.Modules.Relational
+Sharkbone.Modules.Relational =
 
   #==============================================================================================
   # Backbone.RelationalModel setup

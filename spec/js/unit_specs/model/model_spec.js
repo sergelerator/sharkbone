@@ -13,8 +13,34 @@
     it('should have the include method', function() {
       return expect(subject.include).toEqual(jasmine.any(Function));
     });
-    return it('should have the appNamespace method', function() {
+    it('should have the appNamespace method', function() {
       return expect(subject.appNamespace).toEqual(jasmine.any(Function));
+    });
+    describe('included modules', function() {
+      return describe('Sharkbone.Modules.Relational', function() {
+        it('should have a setupRelations method', function() {
+          return expect(subject.prototype.setupRelations).toEqual(jasmine.any(Function));
+        });
+        it('should have a fetchCollections method', function() {
+          return expect(subject.prototype.fetchCollections).toEqual(jasmine.any(Function));
+        });
+        it('should have a createDotSyntaxCollectionGetters method', function() {
+          return expect(subject.prototype.createDotSyntaxCollectionGetters).toEqual(jasmine.any(Function));
+        });
+        return it('should have a toJSON method', function() {
+          return expect(subject.prototype.toJSON).toEqual(jasmine.any(Function));
+        });
+      });
+    });
+    return describe('extended modules', function() {
+      return describe('Sharkbone.ClassModules.Relational', function() {
+        it('should have a hasMany method', function() {
+          return expect(subject.hasMany).toEqual(jasmine.any(Function));
+        });
+        return it('should have a hasOne method', function() {
+          return expect(subject.hasOne).toEqual(jasmine.any(Function));
+        });
+      });
     });
   });
 

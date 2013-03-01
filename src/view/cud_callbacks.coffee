@@ -4,7 +4,7 @@
 # This module is an add-on for Sharkbone.Modules.CUD and enables the callbacks functionality.
 # Every CUD action has support for calling registered callbacks in the names specified here.
 #==================================================================================================
-class Sharkbone.Modules.CUDCallbacks
+Sharkbone.Modules.CUDCallbacks =
 
   _afterSuccessfulCreate:   []
   _afterSuccessfulUpdate:   []

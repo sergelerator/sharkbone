@@ -9,7 +9,7 @@
 # This module can optionally work with the callbacks module (which is a part of the Sharkbone
 # build), allowing views to define certain tasks to be run upon successful or failing actions.
 #==================================================================================================
-class Sharkbone.Modules.CUD
+Sharkbone.Modules.CUD =
 
   # Attempts to create the model stored in @model and add it to the View's @collection
   create: (options) ->

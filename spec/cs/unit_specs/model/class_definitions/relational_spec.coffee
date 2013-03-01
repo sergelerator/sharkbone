@@ -3,21 +3,22 @@ describe 'Sharkbone.ClassModules.Relational', ->
 
   beforeEach ->
     subject.appNamespace = jasmine.createSpy('appNamespace').andReturn 'Sharkbone.App.'
+    subject:: = {}
 
   it 'should be defined', ->
     expect(subject).toBeDefined()
 
   describe 'hasMany', ->
     it 'should be defined', ->
-      expect(subject::hasMany).toBeDefined()
+      expect(subject.hasMany).toBeDefined()
 
     it 'should raise an exception when called without a key', ->
-      expect(subject::hasMany).toThrow()
+      expect(subject.hasMany).toThrow()
 
     describe 'sons collection', ->
       beforeEach ->
         subject::relations = null
-        subject::hasMany.call(subject, 'sons')
+        subject.hasMany.call(subject, 'sons')
 
       it 'should add a key to prototype.relation', ->
         expect(subject::relations.length).toEqual 1
@@ -33,7 +34,7 @@ describe 'Sharkbone.ClassModules.Relational', ->
     describe 'children collection', ->
       beforeEach ->
         subject::relations = null
-        subject::hasMany.call(subject, 'children', collectionType: 'Sharkbone.App.Collections.Children')
+        subject.hasMany.call(subject, 'children', collectionType: 'Sharkbone.App.Collections.Children')
 
       it 'should add a key to prototype.relation', ->
         expect(subject::relations.length).toEqual 1
@@ -48,15 +49,15 @@ describe 'Sharkbone.ClassModules.Relational', ->
 
   describe 'hasOne', ->
     it 'should be defined', ->
-      expect(subject::hasOne).toBeDefined()
+      expect(subject.hasOne).toBeDefined()
 
     it 'should raise an exception when called without a key', ->
-      expect(subject::hasOne).toThrow()
+      expect(subject.hasOne).toThrow()
 
     describe 'related possession', ->
       beforeEach ->
         subject::relations = null
-        subject::hasOne.call(subject, 'possession')
+        subject.hasOne.call(subject, 'possession')
 
       it 'should add a key to prototype.relation', ->
         expect(subject::relations.length).toEqual 1
@@ -71,7 +72,7 @@ describe 'Sharkbone.ClassModules.Relational', ->
     describe 'related task', ->
       beforeEach ->
         subject::relations = null
-        subject::hasOne.call(subject, 'task', relatedModel: 'Sharkbone.App.Models.Chore')
+        subject.hasOne.call(subject, 'task', relatedModel: 'Sharkbone.App.Models.Chore')
 
       it 'should add a key to prototype.relation', ->
         expect(subject::relations.length).toEqual 1

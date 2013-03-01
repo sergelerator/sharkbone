@@ -6,8 +6,8 @@
     subject = Sharkbone.Modules.Relational;
     beforeEach(function() {
       var children_collection, sons_collection;
-      subject.prototype.urlRoot = 'parents';
-      subject.prototype.relations = [
+      subject.urlRoot = 'parents';
+      subject.relations = [
         {
           key: 'children'
         }, {
@@ -20,7 +20,7 @@
       sons_collection = {
         url: 'sons'
       };
-      return subject.prototype.get = jasmine.createSpy('get').andCallFake(function(key) {
+      return subject.get = jasmine.createSpy('get').andCallFake(function(key) {
         var attrs;
         return (attrs = attrs || {
           'id': 1,
@@ -30,43 +30,43 @@
       });
     });
     it('should create spies for each requested method', function() {
-      return expect(subject.prototype.get).toBeDefined();
+      return expect(subject.get).toBeDefined();
     });
     it('returns "parents" when te urlRoot attribute is accessed', function() {
-      return expect(subject.prototype.urlRoot).toEqual("parents");
+      return expect(subject.urlRoot).toEqual("parents");
     });
     it('returns two objects when relations attribute is accessed', function() {
-      return expect(subject.prototype.relations.length).toEqual(2);
+      return expect(subject.relations.length).toEqual(2);
     });
     it('returns 1 when the fake "get" method is called with argument "id"', function() {
-      return expect(subject.prototype.get('id')).toEqual(1);
+      return expect(subject.get('id')).toEqual(1);
     });
     it('returns the "children" key when the first relations member is accessed', function() {
-      return expect(subject.prototype.relations[0].key).toEqual('children');
+      return expect(subject.relations[0].key).toEqual('children');
     });
     describe('setupRelations', function() {
       beforeEach(function() {
-        return subject.prototype.setupRelations();
+        return subject.setupRelations();
       });
       it('should be defined', function() {
-        return expect(subject.prototype.setupRelations).toEqual(jasmine.any(Function));
+        return expect(subject.setupRelations).toEqual(jasmine.any(Function));
       });
       it('should properly set the children url', function() {
-        return expect(subject.prototype.get('children').url).toEqual('parents/1/children');
+        return expect(subject.get('children').url).toEqual('parents/1/children');
       });
       return it('should properly set the sons url', function() {
-        return expect(subject.prototype.get('sons').url).toEqual('parents/1/sons');
+        return expect(subject.get('sons').url).toEqual('parents/1/sons');
       });
     });
     describe('fetchCollections', function() {});
     return describe('createDotSyntaxCollectionGetters', function() {
       it('should be defined', function() {
-        return expect(subject.prototype.createDotSyntaxCollectionGetters).toBeDefined();
+        return expect(subject.createDotSyntaxCollectionGetters).toBeDefined();
       });
       return it('should create dot syntax getters', function() {
-        subject.prototype.createDotSyntaxCollectionGetters();
-        expect(subject.prototype.children()).toEqual(jasmine.any(Object));
-        return expect(subject.prototype.sons()).toEqual(jasmine.any(Object));
+        subject.createDotSyntaxCollectionGetters();
+        expect(subject.children()).toEqual(jasmine.any(Object));
+        return expect(subject.sons()).toEqual(jasmine.any(Object));
       });
     });
   });
