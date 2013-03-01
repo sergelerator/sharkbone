@@ -65,4 +65,4 @@ Sharkbone.Modules.Relational =
       )
       attrs
     else
-      super(arguments...)
+      Backbone.Model::toJSON.apply(@, arguments)

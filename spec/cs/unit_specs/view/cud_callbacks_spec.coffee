@@ -14,7 +14,8 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
     subject.goToIndex = jasmine.createSpy('goToIndex').andReturn 1
     subject.goToShow = jasmine.createSpy('goToShow').andReturn 1
 
-    server = sinon.fakeServer.create()
+    #server = sinon.fakeServer.create()
+    #server.autoRespond = true
 
   afterEach ->
     server.restore()
@@ -42,95 +43,101 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       class Sharkbone.App.Models.User extends Sharkbone.Model
         urlRoot: 'users'
 
+      class Sharkbone.App.Collections.Users extends Sharkbone.Collection
+        model: Sharkbone.App.Models.User
+        url: '/users'
+
       Sharkbone.App.Models.User.setup()
 
       spyOn(subject, 'registerCallback').andCallThrough()
       spyOn(subject, 'registerCallbacks').andCallThrough()
-      subject.mockCallback = jasmine.createSpy('mockCallback').andReturn 1
+      subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> console.log('success')
+      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake (model, xhr, options) -> console.log(arguments)
+      subject.collection = new Sharkbone.App.Collections.Users()
+      subject.model = new Sharkbone.App.Models.User()
+      _(subject).extend Sharkbone.Modules.CUD
 
     describe 'afterCreate', ->
       beforeEach ->
         spyOn(subject, 'afterCreate').andCallThrough()
-        subject.afterCreate subject.mockCallback
-        subject.model = new Sharkbone.App.Models.User()
+        subject.afterCreate subject.successCallback
+        subject.afterFailingCreate subject.errorCallback
 
-        server.respondWith('POST', '/users.json',
-          [200, {'Content-Tpye': 'application/json'},
-          '{name: John, last_name: Doe}']
-        )
+        #server.respondWith('POST', '/users.json',
+          #[200, {'Content-Tpye': 'application/json'},
+          #'{name: John, last_name: Doe}']
+        #)
 
-      it 'should be called with a mockCallback', ->
+      it 'should be called with a successCallback', ->
         expect(subject.afterCreate).toHaveBeenCalled()
-        expect(subject.afterCreate).toHaveBeenCalledWith subject.mockCallback
+        expect(subject.afterCreate).toHaveBeenCalledWith subject.successCallback
 
       it 'registerCallbacks properly called', ->
-        expect(subject.registerCallbacks).toHaveBeenCalled()
         expect(subject.registerCallbacks).toHaveBeenCalledWith(
-          subject._afterSuccessfulCreate, {0: subject.mockCallback}
+          subject._afterSuccessfulCreate, {0: subject.successCallback}
         )
 
       it 'registerCallback properly called', ->
         expect(subject.registerCallback).toHaveBeenCalledWith(
-          subject._afterSuccessfulCreate, subject.mockCallback
+          subject._afterSuccessfulCreate, subject.successCallback
         )
 
-      it 'should add mockCallback to _afterSuccessfulCreate', ->
+      it 'should add successCallback to _afterSuccessfulCreate', ->
         expect(subject._afterSuccessfulCreate.length).toEqual 1
-        expect(subject._afterSuccessfulCreate[0]).toEqual subject.mockCallback
+        expect(subject._afterSuccessfulCreate[0]).toEqual subject.successCallback
 
-      it 'should call mockCallback afterCreate', ->
+      it 'should call successCallback afterCreate', ->
         subject.model.set name: 'John', last_name: 'Doe'
-        subject.model.save()
-        server.respond()
-        expect(subject.mockCallback).toHaveBeenCalled()
+        subject.create()
+        expect(subject.successCallback).toHaveBeenCalled()
 
     describe 'afterUpdate', ->
       beforeEach ->
         spyOn(subject, 'afterUpdate').andCallThrough()
-        subject.afterUpdate subject.mockCallback
+        subject.afterUpdate subject.successCallback
 
-      it 'should be called with a mockCallback', ->
+      it 'should be called with a successCallback', ->
         expect(subject.afterUpdate).toHaveBeenCalled()
-        expect(subject.afterUpdate).toHaveBeenCalledWith subject.mockCallback
+        expect(subject.afterUpdate).toHaveBeenCalledWith subject.successCallback
 
       it 'registerCallbacks properly called', ->
         expect(subject.registerCallbacks).toHaveBeenCalled()
         expect(subject.registerCallbacks).toHaveBeenCalledWith(
-          subject._afterSuccessfulUpdate, {0: subject.mockCallback}
+          subject._afterSuccessfulUpdate, {0: subject.successCallback}
         )
 
       it 'registerCallback properly called', ->
         expect(subject.registerCallback).toHaveBeenCalledWith(
-          subject._afterSuccessfulUpdate, subject.mockCallback
+          subject._afterSuccessfulUpdate, subject.successCallback
         )
 
-      it 'should add mockCallback to _afterSuccessfulUpdate', ->
+      it 'should add successCallback to _afterSuccessfulUpdate', ->
         expect(subject._afterSuccessfulUpdate.length).toEqual 1
-        expect(subject._afterSuccessfulUpdate[0]).toEqual subject.mockCallback
+        expect(subject._afterSuccessfulUpdate[0]).toEqual subject.successCallback
 
     describe 'afterDestroy', ->
       beforeEach ->
         spyOn(subject, 'afterDestroy').andCallThrough()
-        subject.afterDestroy subject.mockCallback
+        subject.afterDestroy subject.successCallback
 
-      it 'should be called with a mockCallback', ->
+      it 'should be called with a successCallback', ->
         expect(subject.afterDestroy).toHaveBeenCalled()
-        expect(subject.afterDestroy).toHaveBeenCalledWith subject.mockCallback
+        expect(subject.afterDestroy).toHaveBeenCalledWith subject.successCallback
 
       it 'registerCallbacks properly called', ->
         expect(subject.registerCallbacks).toHaveBeenCalled()
         expect(subject.registerCallbacks).toHaveBeenCalledWith(
-          subject._afterSuccessfulDestroy, {0: subject.mockCallback}
+          subject._afterSuccessfulDestroy, {0: subject.successCallback}
         )
 
       it 'registerCallback properly called', ->
         expect(subject.registerCallback).toHaveBeenCalledWith(
-          subject._afterSuccessfulDestroy, subject.mockCallback
+          subject._afterSuccessfulDestroy, subject.successCallback
         )
 
-      it 'should add mockCallback to _afterSuccessfulDestroy', ->
+      it 'should add successCallback to _afterSuccessfulDestroy', ->
         expect(subject._afterSuccessfulDestroy.length).toEqual 1
-        expect(subject._afterSuccessfulDestroy[0]).toEqual subject.mockCallback
+        expect(subject._afterSuccessfulDestroy[0]).toEqual subject.successCallback
 
   describe 'initializeDefaultCallbacks', ->
     beforeEach ->

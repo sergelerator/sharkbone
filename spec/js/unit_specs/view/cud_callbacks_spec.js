@@ -16,8 +16,7 @@
       subject._afterFailingDestroy = [];
       subject.remove = jasmine.createSpy('remove').andReturn(1);
       subject.goToIndex = jasmine.createSpy('goToIndex').andReturn(1);
-      subject.goToShow = jasmine.createSpy('goToShow').andReturn(1);
-      return server = sinon.fakeServer.create();
+      return subject.goToShow = jasmine.createSpy('goToShow').andReturn(1);
     });
     afterEach(function() {
       return server.restore();
@@ -60,93 +59,109 @@
           return User;
 
         })(Sharkbone.Model);
+        Sharkbone.App.Collections.Users = (function(_super) {
+
+          __extends(Users, _super);
+
+          function Users() {
+            Users.__super__.constructor.apply(this, arguments);
+          }
+
+          Users.prototype.model = Sharkbone.App.Models.User;
+
+          Users.prototype.url = '/users';
+
+          return Users;
+
+        })(Sharkbone.Collection);
         Sharkbone.App.Models.User.setup();
         spyOn(subject, 'registerCallback').andCallThrough();
         spyOn(subject, 'registerCallbacks').andCallThrough();
-        return subject.mockCallback = jasmine.createSpy('mockCallback').andReturn(1);
+        subject.successCallback = jasmine.createSpy('successCallback').andCallFake(function() {
+          return console.log('success');
+        });
+        subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake(function(model, xhr, options) {
+          return console.log(arguments);
+        });
+        subject.collection = new Sharkbone.App.Collections.Users();
+        subject.model = new Sharkbone.App.Models.User();
+        return _(subject).extend(Sharkbone.Modules.CUD);
       });
       describe('afterCreate', function() {
         beforeEach(function() {
           spyOn(subject, 'afterCreate').andCallThrough();
-          subject.afterCreate(subject.mockCallback);
-          subject.model = new Sharkbone.App.Models.User();
-          return server.respondWith('POST', '/users.json', [
-            200, {
-              'Content-Tpye': 'application/json'
-            }, '{name: John, last_name: Doe}'
-          ]);
+          subject.afterCreate(subject.successCallback);
+          return subject.afterFailingCreate(subject.errorCallback);
         });
-        it('should be called with a mockCallback', function() {
+        it('should be called with a successCallback', function() {
           expect(subject.afterCreate).toHaveBeenCalled();
-          return expect(subject.afterCreate).toHaveBeenCalledWith(subject.mockCallback);
+          return expect(subject.afterCreate).toHaveBeenCalledWith(subject.successCallback);
         });
         it('registerCallbacks properly called', function() {
-          expect(subject.registerCallbacks).toHaveBeenCalled();
           return expect(subject.registerCallbacks).toHaveBeenCalledWith(subject._afterSuccessfulCreate, {
-            0: subject.mockCallback
+            0: subject.successCallback
           });
         });
         it('registerCallback properly called', function() {
-          return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.mockCallback);
+          return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.successCallback);
         });
-        it('should add mockCallback to _afterSuccessfulCreate', function() {
+        it('should add successCallback to _afterSuccessfulCreate', function() {
           expect(subject._afterSuccessfulCreate.length).toEqual(1);
-          return expect(subject._afterSuccessfulCreate[0]).toEqual(subject.mockCallback);
+          return expect(subject._afterSuccessfulCreate[0]).toEqual(subject.successCallback);
         });
-        return it('should call mockCallback afterCreate', function() {
+        return it('should call successCallback afterCreate', function() {
           subject.model.set({
             name: 'John',
             last_name: 'Doe'
           });
-          subject.model.save();
-          server.respond();
-          return expect(subject.mockCallback).toHaveBeenCalled();
+          subject.create();
+          return expect(subject.successCallback).toHaveBeenCalled();
         });
       });
       describe('afterUpdate', function() {
         beforeEach(function() {
           spyOn(subject, 'afterUpdate').andCallThrough();
-          return subject.afterUpdate(subject.mockCallback);
+          return subject.afterUpdate(subject.successCallback);
         });
-        it('should be called with a mockCallback', function() {
+        it('should be called with a successCallback', function() {
           expect(subject.afterUpdate).toHaveBeenCalled();
-          return expect(subject.afterUpdate).toHaveBeenCalledWith(subject.mockCallback);
+          return expect(subject.afterUpdate).toHaveBeenCalledWith(subject.successCallback);
         });
         it('registerCallbacks properly called', function() {
           expect(subject.registerCallbacks).toHaveBeenCalled();
           return expect(subject.registerCallbacks).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, {
-            0: subject.mockCallback
+            0: subject.successCallback
           });
         });
         it('registerCallback properly called', function() {
-          return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.mockCallback);
+          return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.successCallback);
         });
-        return it('should add mockCallback to _afterSuccessfulUpdate', function() {
+        return it('should add successCallback to _afterSuccessfulUpdate', function() {
           expect(subject._afterSuccessfulUpdate.length).toEqual(1);
-          return expect(subject._afterSuccessfulUpdate[0]).toEqual(subject.mockCallback);
+          return expect(subject._afterSuccessfulUpdate[0]).toEqual(subject.successCallback);
         });
       });
       return describe('afterDestroy', function() {
         beforeEach(function() {
           spyOn(subject, 'afterDestroy').andCallThrough();
-          return subject.afterDestroy(subject.mockCallback);
+          return subject.afterDestroy(subject.successCallback);
         });
-        it('should be called with a mockCallback', function() {
+        it('should be called with a successCallback', function() {
           expect(subject.afterDestroy).toHaveBeenCalled();
-          return expect(subject.afterDestroy).toHaveBeenCalledWith(subject.mockCallback);
+          return expect(subject.afterDestroy).toHaveBeenCalledWith(subject.successCallback);
         });
         it('registerCallbacks properly called', function() {
           expect(subject.registerCallbacks).toHaveBeenCalled();
           return expect(subject.registerCallbacks).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, {
-            0: subject.mockCallback
+            0: subject.successCallback
           });
         });
         it('registerCallback properly called', function() {
-          return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.mockCallback);
+          return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.successCallback);
         });
-        return it('should add mockCallback to _afterSuccessfulDestroy', function() {
+        return it('should add successCallback to _afterSuccessfulDestroy', function() {
           expect(subject._afterSuccessfulDestroy.length).toEqual(1);
-          return expect(subject._afterSuccessfulDestroy[0]).toEqual(subject.mockCallback);
+          return expect(subject._afterSuccessfulDestroy[0]).toEqual(subject.successCallback);
         });
       });
     });

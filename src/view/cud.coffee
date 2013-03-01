@@ -12,7 +12,7 @@
 Sharkbone.Modules.CUD =
 
   # Attempts to create the model stored in @model and add it to the View's @collection
-  create: (options) ->
+  create: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
     @collection.create(@model, {
@@ -21,7 +21,7 @@ Sharkbone.Modules.CUD =
     })
 
   # Attempts to update the model stored in @model
-  update: (options) ->
+  update: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
     @model.save({
@@ -30,7 +30,7 @@ Sharkbone.Modules.CUD =
     })
 
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
-  destroy: (id, options) ->
+  destroy: (id = {}, options = {}) ->
     id.preventDefault?()
     id.stopPropagation?()
     if id? and @collection?
@@ -49,4 +49,4 @@ Sharkbone.Modules.CUD =
   # The callback runner checks if callbacks are enabled and runs them.
   # The callback implementation lives in Sharkbone.Modules.CUDCallbacks
   runCallbacksFor: ->
-    @callbacksFor?(arguments)
+    @callbacksFor?(arguments...)
