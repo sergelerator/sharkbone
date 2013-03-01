@@ -47,6 +47,9 @@ class Sharkbone.Modules.CUDCallbacks
     @registerCallbacks.call(@, @_afterFailingDestroy, arguments)
 
   registerCallbacks: (callbacksContainer)->
-    _(Array::slice.call(arguments, 1)).each( (func) =>
-      callbacksContainer.push(func) if typeof func is 'function'
+    _(Array::slice.call(arguments[1])).each( (func) =>
+      @registerCallback(callbacksContainer, func)
     )
+
+  registerCallback: (callbacksContainer, func) ->
+    callbacksContainer.push(func) if typeof func is 'function'

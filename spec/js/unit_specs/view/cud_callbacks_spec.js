@@ -4,6 +4,17 @@
   describe('Sharkbone.Modules.CUDCallbacks', function() {
     var subject;
     subject = Sharkbone.Modules.CUDCallbacks;
+    beforeEach(function() {
+      subject.prototype._afterSuccessfulCreate = [];
+      subject.prototype._afterSuccessfulUpdate = [];
+      subject.prototype._afterSuccessfulDestroy = [];
+      subject.prototype._afterFailingCreate = [];
+      subject.prototype._afterFailingUpdate = [];
+      subject.prototype._afterFailingDestroy = [];
+      subject.prototype.remove = jasmine.createSpy('remove').andReturn(1);
+      subject.prototype.goToIndex = jasmine.createSpy('goToIndex').andReturn(1);
+      return subject.prototype.goToShow = jasmine.createSpy('goToShow').andReturn(1);
+    });
     it('should be defined', function() {
       return expect(subject).toBeDefined();
     });
@@ -27,15 +38,47 @@
         return expect(subject.prototype._afterFailingDestroy).toEqual([]);
       });
     });
+    describe('afterCreate', function() {
+      beforeEach(function() {
+        spyOn(subject.prototype, 'registerCallback').andCallThrough();
+        spyOn(subject.prototype, 'registerCallbacks').andCallThrough();
+        spyOn(subject.prototype, 'afterCreate').andCallThrough();
+        subject.prototype.mockCallback = jasmine.createSpy('mockCallback').andReturn(1);
+        return subject.prototype.afterCreate(subject.prototype.mockCallback);
+      });
+      it('should be called with an emptyFunction', function() {
+        expect(subject.prototype.afterCreate).toHaveBeenCalled();
+        return expect(subject.prototype.afterCreate).toHaveBeenCalledWith(subject.prototype.mockCallback);
+      });
+      it('registerCallbacks properly called', function() {
+        expect(subject.prototype.registerCallbacks).toHaveBeenCalled();
+        return expect(subject.prototype.registerCallbacks).toHaveBeenCalledWith(subject.prototype._afterSuccessfulCreate, {
+          0: subject.prototype.mockCallback
+        });
+      });
+      it('registerCallback properly called', function() {
+        return expect(subject.prototype.registerCallback).toHaveBeenCalledWith(subject.prototype._afterSuccessfulCreate, subject.prototype.mockCallback);
+      });
+      return it('should add mockCallback to _afterSuccessfulCreate', function() {
+        expect(subject.prototype._afterSuccessfulCreate.length).toEqual(1);
+        return expect(subject.prototype._afterSuccessfulCreate[0]).toEqual(subject.prototype.mockCallback);
+      });
+    });
     return describe('initializeDefaultCallbacks', function() {
       beforeEach(function() {
-        subject.prototype._afterSuccessfulCreate = [];
-        subject.prototype._afterSuccessfulUpdate = [];
-        subject.prototype._afterSuccessfulDestroy = [];
-        subject.prototype._afterFailingCreate = [];
-        subject.prototype._afterFailingUpdate = [];
-        subject.prototype._afterFailingDestroy = [];
+        spyOn(subject.prototype, 'afterCreate').andCallThrough();
+        spyOn(subject.prototype, 'afterUpdate').andCallThrough();
+        spyOn(subject.prototype, 'afterDestroy').andCallThrough();
         return subject.prototype.initializeDefaultCallbacks();
+      });
+      it('should have called afterCreate', function() {
+        return expect(subject.prototype.afterCreate).toHaveBeenCalled();
+      });
+      it('should have called afterUpdate', function() {
+        return expect(subject.prototype.afterUpdate).toHaveBeenCalled();
+      });
+      it('should have called afterDestroy', function() {
+        return expect(subject.prototype.afterDestroy).toHaveBeenCalled();
       });
       it('should add 2 callbacks to _afterSuccessfulCreate', function() {
         return expect(subject.prototype._afterSuccessfulCreate.length).toEqual(2);
@@ -44,7 +87,7 @@
         return expect(subject.prototype._afterSuccessfulUpdate.length).toEqual(2);
       });
       return it('should add 1 callback to _afterSuccessfulDestroy', function() {
-        return expect(subject.prototype._afterSuccessfulCreate.length).toEqual(1);
+        return expect(subject.prototype._afterSuccessfulDestroy.length).toEqual(1);
       });
     });
   });
