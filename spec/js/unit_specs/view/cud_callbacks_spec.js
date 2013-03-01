@@ -83,7 +83,7 @@
           return console.log('success');
         });
         subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake(function(model, xhr, options) {
-          return console.log(arguments);
+          return console.log('failure');
         });
         subject.collection = new Sharkbone.App.Collections.Users();
         subject.model = new Sharkbone.App.Models.User();
@@ -95,6 +95,8 @@
       });
       describe('afterCreate', function() {
         beforeEach(function() {
+          subject._afterSuccessfulCreate = [];
+          subject._afterFailingCreate = [];
           spyOn(subject, 'afterCreate').andCallThrough();
           spyOn(subject, 'runCallbacksFor').andCallThrough();
           subject.afterCreate(subject.successCallback);
@@ -131,12 +133,12 @@
           server.respond();
           console.log(subject._afterSuccessfulCreate);
           console.log(subject.successCallback);
-          return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback]);
+          return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model);
         });
         return it('should call callbacksFor with proper arguments', function() {
           subject.create();
           server.respond();
-          return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback]);
+          return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model);
         });
       });
       describe('afterUpdate', function() {

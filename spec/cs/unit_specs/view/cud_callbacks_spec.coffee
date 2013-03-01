@@ -53,7 +53,7 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       spyOn(subject, 'registerCallbacks').andCallThrough()
       spyOn(subject, 'callbacksFor').andCallThrough()
       subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> console.log('success')
-      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake (model, xhr, options) -> console.log(arguments)
+      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake (model, xhr, options) -> console.log('failure')
       subject.collection = new Sharkbone.App.Collections.Users()
       subject.model = new Sharkbone.App.Models.User()
       subject.model.set name: 'John', last_name: 'Doe'
@@ -61,6 +61,8 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
 
     describe 'afterCreate', ->
       beforeEach ->
+        subject._afterSuccessfulCreate =   []
+        subject._afterFailingCreate =   []
         spyOn(subject, 'afterCreate').andCallThrough()
         spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterCreate subject.successCallback
@@ -99,12 +101,12 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         server.respond()
         console.log subject._afterSuccessfulCreate
         console.log subject.successCallback
-        expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback])
+        expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model)
 
       it 'should call callbacksFor with proper arguments', ->
         subject.create()
         server.respond()
-        expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, [subject.successCallback])
+        expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model)
 
     describe 'afterUpdate', ->
       beforeEach ->
