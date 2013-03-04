@@ -45,6 +45,7 @@ class Sharkbone.View extends Backbone.View
     _.bindAll(@)
     @initializePaginatedCollection()
     @initializeModelBinding()
+    @initializeCudContainers?()
     @
 
   initializePaginatedCollection: ->

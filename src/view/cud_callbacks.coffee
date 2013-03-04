@@ -22,6 +22,14 @@ Sharkbone.Modules.CUDCallbacks =
     @afterDestroy @goToIndex
     @
 
+  initializeCudContainers: ->
+    @_afterSuccessfulCreate =   []
+    @_afterSuccessfulUpdate =   []
+    @_afterSuccessfulDestroy =  []
+    @_afterFailingCreate =      []
+    @_afterFailingUpdate =      []
+    @_afterFailingDestroy =     []
+
   callbacksFor: (callbacksCollection, args) ->
     _(callbacksCollection).each( (func) ->
       func.apply(@, args)
