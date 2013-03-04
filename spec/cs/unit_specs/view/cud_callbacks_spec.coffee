@@ -51,8 +51,8 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       spyOn(subject, 'registerCallback').andCallThrough()
       spyOn(subject, 'registerCallbacks').andCallThrough()
       spyOn(subject, 'callbacksFor').andCallThrough()
-      subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> console.log('success'); console.log(arguments)
-      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake () -> console.log('error'); console.log(arguments)
+      subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> return null
+      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake () -> return null
       subject.collection = new Sharkbone.App.Collections.Users()
       subject.model = new Sharkbone.App.Models.User()
       subject.model.set name: 'John', last_name: 'Doe'
@@ -64,11 +64,11 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       )
 
       server.respondWith('PUT', 'users/1',
-        [204, {'Content-Tpye': 'application/json'}, '']
+        [204, {}, '']
       )
 
       server.respondWith('DELETE', 'users/1',
-        [204, {'Content-Tpye': 'application/json'}, '']
+        [204, {}, '']
       )
 
     describe 'afterCreate', ->

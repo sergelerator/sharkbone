@@ -80,12 +80,10 @@
         spyOn(subject, 'registerCallbacks').andCallThrough();
         spyOn(subject, 'callbacksFor').andCallThrough();
         subject.successCallback = jasmine.createSpy('successCallback').andCallFake(function() {
-          console.log('success');
-          return console.log(arguments);
+          return null;
         });
         subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake(function() {
-          console.log('error');
-          return console.log(arguments);
+          return null;
         });
         subject.collection = new Sharkbone.App.Collections.Users();
         subject.model = new Sharkbone.App.Models.User();
@@ -99,16 +97,8 @@
             'Content-Tpye': 'application/json'
           }, '{"id": 1, "name": "John", "last_name": "Doe"}'
         ]);
-        server.respondWith('PUT', 'users/1', [
-          204, {
-            'Content-Tpye': 'application/json'
-          }, ''
-        ]);
-        return server.respondWith('DELETE', 'users/1', [
-          204, {
-            'Content-Tpye': 'application/json'
-          }, ''
-        ]);
+        server.respondWith('PUT', 'users/1', [204, {}, '']);
+        return server.respondWith('DELETE', 'users/1', [204, {}, '']);
       });
       describe('afterCreate', function() {
         beforeEach(function() {
