@@ -80,10 +80,12 @@
         spyOn(subject, 'registerCallbacks').andCallThrough();
         spyOn(subject, 'callbacksFor').andCallThrough();
         subject.successCallback = jasmine.createSpy('successCallback').andCallFake(function() {
-          return console.log('success');
+          console.log('success');
+          return console.log(arguments);
         });
-        subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake(function(model, xhr, options) {
-          return console.log('failure');
+        subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake(function() {
+          console.log('error');
+          return console.log(arguments);
         });
         subject.collection = new Sharkbone.App.Collections.Users();
         subject.model = new Sharkbone.App.Models.User();
@@ -91,7 +93,22 @@
           name: 'John',
           last_name: 'Doe'
         });
-        return _(subject).extend(Sharkbone.Modules.CUD);
+        _(subject).extend(Sharkbone.Modules.CUD);
+        server.respondWith('POST', 'users', [
+          201, {
+            'Content-Tpye': 'application/json'
+          }, '{"id": 1, "name": "John", "last_name": "Doe"}'
+        ]);
+        server.respondWith('PUT', 'users/1', [
+          204, {
+            'Content-Tpye': 'application/json'
+          }, ''
+        ]);
+        return server.respondWith('DELETE', 'users/1', [
+          204, {
+            'Content-Tpye': 'application/json'
+          }, ''
+        ]);
       });
       describe('afterCreate', function() {
         beforeEach(function() {
@@ -100,12 +117,7 @@
           spyOn(subject, 'afterCreate').andCallThrough();
           spyOn(subject, 'runCallbacksFor').andCallThrough();
           subject.afterCreate(subject.successCallback);
-          subject.afterFailingCreate(subject.errorCallback);
-          return server.respondWith('POST', 'users', [
-            201, {
-              'Content-Tpye': 'application/json'
-            }, '{name: John, last_name: Doe}'
-          ]);
+          return subject.afterFailingCreate(subject.errorCallback);
         });
         it('should be called with a successCallback', function() {
           expect(subject.afterCreate).toHaveBeenCalled();
@@ -131,8 +143,6 @@
         it('should call runCallbacksFor with proper arguments', function() {
           subject.create();
           server.respond();
-          console.log(subject._afterSuccessfulCreate);
-          console.log(subject.successCallback);
           return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model);
         });
         return it('should call callbacksFor with proper arguments', function() {
@@ -143,8 +153,20 @@
       });
       describe('afterUpdate', function() {
         beforeEach(function() {
+          subject._afterSuccessfulUpdate = [];
+          subject._afterFailingUpdate = [];
           spyOn(subject, 'afterUpdate').andCallThrough();
-          return subject.afterUpdate(subject.successCallback);
+          spyOn(subject, 'runCallbacksFor').andCallThrough();
+          subject.afterUpdate(subject.successCallback);
+          subject.afterFailingUpdate(subject.errorCallback);
+          subject.model.set({
+            name: 'Foo'
+          });
+          subject.model.set({
+            last_name: 'Bar'
+          });
+          subject.create();
+          return server.respond();
         });
         it('should be called with a successCallback', function() {
           expect(subject.afterUpdate).toHaveBeenCalled();
@@ -159,15 +181,36 @@
         it('registerCallback properly called', function() {
           return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.successCallback);
         });
-        return it('should add successCallback to _afterSuccessfulUpdate', function() {
+        it('should add successCallback to _afterSuccessfulUpdate', function() {
           expect(subject._afterSuccessfulUpdate.length).toEqual(1);
           return expect(subject._afterSuccessfulUpdate[0]).toEqual(subject.successCallback);
+        });
+        xit('should call successCallback afterUpdate', function() {
+          subject.update();
+          server.respond();
+          console.log(server);
+          expect(subject.successCallback).toHaveBeenCalled();
+          return expect(subject.errorCallback).toHaveBeenCalled();
+        });
+        xit('should call runCallbacksFor with proper arguments', function() {
+          subject.update();
+          server.respond();
+          return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model);
+        });
+        return xit('should call callbacksFor with proper arguments', function() {
+          subject.update();
+          server.respond();
+          return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model);
         });
       });
       return describe('afterDestroy', function() {
         beforeEach(function() {
+          subject._afterSuccessfulDestroy = [];
+          subject._afterFailingDestroy = [];
           spyOn(subject, 'afterDestroy').andCallThrough();
-          return subject.afterDestroy(subject.successCallback);
+          spyOn(subject, 'runCallbacksFor').andCallThrough();
+          subject.afterDestroy(subject.successCallback);
+          return subject.afterFailingDestroy(subject.errorCallback);
         });
         it('should be called with a successCallback', function() {
           expect(subject.afterDestroy).toHaveBeenCalled();
@@ -182,9 +225,26 @@
         it('registerCallback properly called', function() {
           return expect(subject.registerCallback).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.successCallback);
         });
-        return it('should add successCallback to _afterSuccessfulDestroy', function() {
+        it('should add successCallback to _afterSuccessfulDestroy', function() {
           expect(subject._afterSuccessfulDestroy.length).toEqual(1);
           return expect(subject._afterSuccessfulDestroy[0]).toEqual(subject.successCallback);
+        });
+        xit('should call successCallback afterDestroy', function() {
+          subject.destroy();
+          server.respond();
+          console.log(server);
+          expect(subject.successCallback).toHaveBeenCalled();
+          return expect(subject.errorCallback).toHaveBeenCalled();
+        });
+        xit('should call runCallbacksFor with proper arguments', function() {
+          subject.destroy();
+          server.respond();
+          return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model);
+        });
+        return xit('should call callbacksFor with proper arguments', function() {
+          subject.destroy();
+          server.respond();
+          return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model);
         });
       });
     });

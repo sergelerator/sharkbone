@@ -15,7 +15,6 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
     subject.goToShow = jasmine.createSpy('goToShow').andReturn 1
 
     server = sinon.fakeServer.create()
-    #server.autoRespond = true
 
   afterEach ->
     server.restore()
@@ -52,26 +51,34 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       spyOn(subject, 'registerCallback').andCallThrough()
       spyOn(subject, 'registerCallbacks').andCallThrough()
       spyOn(subject, 'callbacksFor').andCallThrough()
-      subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> console.log('success')
-      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake (model, xhr, options) -> console.log('failure')
+      subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> console.log('success'); console.log(arguments)
+      subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake () -> console.log('error'); console.log(arguments)
       subject.collection = new Sharkbone.App.Collections.Users()
       subject.model = new Sharkbone.App.Models.User()
       subject.model.set name: 'John', last_name: 'Doe'
       _(subject).extend Sharkbone.Modules.CUD
 
+      server.respondWith('POST', 'users',
+        [201, {'Content-Tpye': 'application/json'},
+        '{"id": 1, "name": "John", "last_name": "Doe"}']
+      )
+
+      server.respondWith('PUT', 'users/1',
+        [204, {'Content-Tpye': 'application/json'}, '']
+      )
+
+      server.respondWith('DELETE', 'users/1',
+        [204, {'Content-Tpye': 'application/json'}, '']
+      )
+
     describe 'afterCreate', ->
       beforeEach ->
-        subject._afterSuccessfulCreate =   []
-        subject._afterFailingCreate =   []
+        subject._afterSuccessfulCreate = []
+        subject._afterFailingCreate = []
         spyOn(subject, 'afterCreate').andCallThrough()
         spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterCreate subject.successCallback
         subject.afterFailingCreate subject.errorCallback
-
-        server.respondWith('POST', 'users',
-          [201, {'Content-Tpye': 'application/json'},
-          '{name: John, last_name: Doe}']
-        )
 
       it 'should be called with a successCallback', ->
         expect(subject.afterCreate).toHaveBeenCalled()
@@ -99,8 +106,6 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       it 'should call runCallbacksFor with proper arguments', ->
         subject.create()
         server.respond()
-        console.log subject._afterSuccessfulCreate
-        console.log subject.successCallback
         expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model)
 
       it 'should call callbacksFor with proper arguments', ->
@@ -108,10 +113,20 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         server.respond()
         expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulCreate, subject.model)
 
+
     describe 'afterUpdate', ->
       beforeEach ->
+        subject._afterSuccessfulUpdate =   []
+        subject._afterFailingUpdate =   []
         spyOn(subject, 'afterUpdate').andCallThrough()
+        spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterUpdate subject.successCallback
+        subject.afterFailingUpdate subject.errorCallback
+        subject.model.set(name: 'Foo')
+        subject.model.set(last_name: 'Bar')
+
+        subject.create()
+        server.respond()
 
       it 'should be called with a successCallback', ->
         expect(subject.afterUpdate).toHaveBeenCalled()
@@ -132,10 +147,32 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         expect(subject._afterSuccessfulUpdate.length).toEqual 1
         expect(subject._afterSuccessfulUpdate[0]).toEqual subject.successCallback
 
+      xit 'should call successCallback afterUpdate', ->
+        subject.update()
+        server.respond()
+        console.log server
+        expect(subject.successCallback).toHaveBeenCalled()
+        expect(subject.errorCallback).toHaveBeenCalled()
+
+      xit 'should call runCallbacksFor with proper arguments', ->
+        subject.update()
+        server.respond()
+        expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model)
+
+      xit 'should call callbacksFor with proper arguments', ->
+        subject.update()
+        server.respond()
+        expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model)
+
+
     describe 'afterDestroy', ->
       beforeEach ->
+        subject._afterSuccessfulDestroy =   []
+        subject._afterFailingDestroy =   []
         spyOn(subject, 'afterDestroy').andCallThrough()
+        spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterDestroy subject.successCallback
+        subject.afterFailingDestroy subject.errorCallback
 
       it 'should be called with a successCallback', ->
         expect(subject.afterDestroy).toHaveBeenCalled()
@@ -155,6 +192,23 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       it 'should add successCallback to _afterSuccessfulDestroy', ->
         expect(subject._afterSuccessfulDestroy.length).toEqual 1
         expect(subject._afterSuccessfulDestroy[0]).toEqual subject.successCallback
+
+      xit 'should call successCallback afterDestroy', ->
+        subject.destroy()
+        server.respond()
+        console.log server
+        expect(subject.successCallback).toHaveBeenCalled()
+        expect(subject.errorCallback).toHaveBeenCalled()
+
+      xit 'should call runCallbacksFor with proper arguments', ->
+        subject.destroy()
+        server.respond()
+        expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model)
+
+      xit 'should call callbacksFor with proper arguments', ->
+        subject.destroy()
+        server.respond()
+        expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model)
 
   describe 'initializeDefaultCallbacks', ->
     beforeEach ->
