@@ -9,6 +9,7 @@ root.Sharkbone =
     Collections: {}
     Views: {}
     Routers: {}
+    Modules: {}
 
     Initializers:
       initializeRouters: (opts = @options) ->

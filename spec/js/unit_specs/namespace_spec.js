@@ -49,6 +49,11 @@
           return expect(Sharkbone.App.Routers).toBeDefined();
         });
       });
+      describe('Modules namespace', function() {
+        return it('should be defined', function() {
+          return expect(Sharkbone.App.Modules).toBeDefined();
+        });
+      });
       return describe('Initializers', function() {
         it('should be defined', function() {
           return expect(Sharkbone.App.Initializers).toBeDefined();

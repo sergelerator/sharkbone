@@ -38,6 +38,10 @@ describe 'Sharkbone namespace', ->
       it 'should be defined', ->
         expect(Sharkbone.App.Routers).toBeDefined()
 
+    describe 'Modules namespace', ->
+      it 'should be defined', ->
+        expect(Sharkbone.App.Modules).toBeDefined()
+
     describe 'Initializers', ->
       it 'should be defined', ->
         expect(Sharkbone.App.Initializers).toBeDefined()
