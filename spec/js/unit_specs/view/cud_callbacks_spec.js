@@ -97,13 +97,20 @@
             'Content-Tpye': 'application/json'
           }, '{"id": 1, "name": "John", "last_name": "Doe"}'
         ]);
-        server.respondWith('PUT', 'users/1', [204, {}, '']);
-        return server.respondWith('DELETE', 'users/1', [204, {}, '']);
+        server.respondWith('PUT', 'users/1', [
+          204, {
+            'Content-Tpye': 'application/json'
+          }, ''
+        ]);
+        return server.respondWith('DELETE', 'users/1', [
+          204, {
+            'Content-Tpye': 'application/json'
+          }, ''
+        ]);
       });
       describe('afterCreate', function() {
         beforeEach(function() {
-          subject._afterSuccessfulCreate = [];
-          subject._afterFailingCreate = [];
+          subject.initializeCudContainers();
           spyOn(subject, 'afterCreate').andCallThrough();
           spyOn(subject, 'runCallbacksFor').andCallThrough();
           subject.afterCreate(subject.successCallback);
@@ -143,20 +150,16 @@
       });
       describe('afterUpdate', function() {
         beforeEach(function() {
-          subject._afterSuccessfulUpdate = [];
-          subject._afterFailingUpdate = [];
+          subject.initializeCudContainers();
           spyOn(subject, 'afterUpdate').andCallThrough();
           spyOn(subject, 'runCallbacksFor').andCallThrough();
           subject.afterUpdate(subject.successCallback);
           subject.afterFailingUpdate(subject.errorCallback);
-          subject.model.set({
-            name: 'Foo'
-          });
-          subject.model.set({
+          return subject.model = new Sharkbone.App.Models.User({
+            id: 1,
+            name: 'Foo',
             last_name: 'Bar'
           });
-          subject.create();
-          return server.respond();
         });
         it('should be called with a successCallback', function() {
           expect(subject.afterUpdate).toHaveBeenCalled();
@@ -178,13 +181,15 @@
         xit('should call successCallback afterUpdate', function() {
           subject.update();
           server.respond();
-          console.log(server);
           expect(subject.successCallback).toHaveBeenCalled();
           return expect(subject.errorCallback).toHaveBeenCalled();
         });
         xit('should call runCallbacksFor with proper arguments', function() {
           subject.update();
           server.respond();
+          console.log(server);
+          expect(subject._afterSuccessfulUpdate.length).toEqual(1);
+          expect(subject._afterSuccessfulUpdate[0]).toEqual(subject.successCallback);
           return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model);
         });
         return xit('should call callbacksFor with proper arguments', function() {

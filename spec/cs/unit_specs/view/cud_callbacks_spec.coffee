@@ -64,17 +64,16 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       )
 
       server.respondWith('PUT', 'users/1',
-        [204, {}, '']
+        [204, {'Content-Tpye': 'application/json'}, '']
       )
 
       server.respondWith('DELETE', 'users/1',
-        [204, {}, '']
+        [204, {'Content-Tpye': 'application/json'}, '']
       )
 
     describe 'afterCreate', ->
       beforeEach ->
-        subject._afterSuccessfulCreate = []
-        subject._afterFailingCreate = []
+        subject.initializeCudContainers()
         spyOn(subject, 'afterCreate').andCallThrough()
         spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterCreate subject.successCallback
@@ -116,17 +115,14 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
 
     describe 'afterUpdate', ->
       beforeEach ->
-        subject._afterSuccessfulUpdate =   []
-        subject._afterFailingUpdate =   []
+        subject.initializeCudContainers()
         spyOn(subject, 'afterUpdate').andCallThrough()
         spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterUpdate subject.successCallback
         subject.afterFailingUpdate subject.errorCallback
-        subject.model.set(name: 'Foo')
-        subject.model.set(last_name: 'Bar')
-
-        subject.create()
-        server.respond()
+        subject.model = new Sharkbone.App.Models.User(
+          id: 1, name: 'Foo', last_name: 'Bar'
+        )
 
       it 'should be called with a successCallback', ->
         expect(subject.afterUpdate).toHaveBeenCalled()
@@ -150,13 +146,15 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
       xit 'should call successCallback afterUpdate', ->
         subject.update()
         server.respond()
-        console.log server
         expect(subject.successCallback).toHaveBeenCalled()
         expect(subject.errorCallback).toHaveBeenCalled()
 
       xit 'should call runCallbacksFor with proper arguments', ->
         subject.update()
         server.respond()
+        console.log server
+        expect(subject._afterSuccessfulUpdate.length).toEqual 1
+        expect(subject._afterSuccessfulUpdate[0]).toEqual subject.successCallback
         expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model)
 
       xit 'should call callbacksFor with proper arguments', ->
