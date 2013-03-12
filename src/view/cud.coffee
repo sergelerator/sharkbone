@@ -24,7 +24,7 @@ Sharkbone.Modules.CUD =
   update: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
-    @model.save({
+    @model.save(undefined, {
       success: () => @runCallbacksFor(@_afterSuccessfulUpdate, @model)
       error: () => @runCallbacksFor(@_afterFailingUpdate, @model)
     })
@@ -33,8 +33,8 @@ Sharkbone.Modules.CUD =
   destroy: (id = {}, options = {}) ->
     id.preventDefault?()
     id.stopPropagation?()
-    if id? and @collection?
-      @collection.get(id).destroy({
+    if id? and @collection? and (model = @collection.get(id))
+      model.destroy({
         success: () => @runCallbacksFor(@_afterSuccessfulDestroy, @model)
         error: () => @runCallbacksFor(@_afterFailingDestroy, @model)
       })

@@ -178,21 +178,19 @@
           expect(subject._afterSuccessfulUpdate.length).toEqual(1);
           return expect(subject._afterSuccessfulUpdate[0]).toEqual(subject.successCallback);
         });
-        xit('should call successCallback afterUpdate', function() {
+        it('should call successCallback afterUpdate', function() {
           subject.update();
           server.respond();
-          expect(subject.successCallback).toHaveBeenCalled();
-          return expect(subject.errorCallback).toHaveBeenCalled();
+          return expect(subject.successCallback).toHaveBeenCalled();
         });
-        xit('should call runCallbacksFor with proper arguments', function() {
+        it('should call runCallbacksFor with proper arguments', function() {
           subject.update();
           server.respond();
-          console.log(server);
           expect(subject._afterSuccessfulUpdate.length).toEqual(1);
           expect(subject._afterSuccessfulUpdate[0]).toEqual(subject.successCallback);
           return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model);
         });
-        return xit('should call callbacksFor with proper arguments', function() {
+        return it('should call callbacksFor with proper arguments', function() {
           subject.update();
           server.respond();
           return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model);
@@ -200,12 +198,16 @@
       });
       return describe('afterDestroy', function() {
         beforeEach(function() {
-          subject._afterSuccessfulDestroy = [];
-          subject._afterFailingDestroy = [];
+          subject.initializeCudContainers();
           spyOn(subject, 'afterDestroy').andCallThrough();
           spyOn(subject, 'runCallbacksFor').andCallThrough();
           subject.afterDestroy(subject.successCallback);
-          return subject.afterFailingDestroy(subject.errorCallback);
+          subject.afterFailingDestroy(subject.errorCallback);
+          return subject.model = new Sharkbone.App.Models.User({
+            id: 1,
+            name: 'Foo',
+            last_name: 'Bar'
+          });
         });
         it('should be called with a successCallback', function() {
           expect(subject.afterDestroy).toHaveBeenCalled();
@@ -224,19 +226,23 @@
           expect(subject._afterSuccessfulDestroy.length).toEqual(1);
           return expect(subject._afterSuccessfulDestroy[0]).toEqual(subject.successCallback);
         });
-        xit('should call successCallback afterDestroy', function() {
+        it('should call successCallback afterDestroy', function() {
           subject.destroy();
           server.respond();
-          console.log(server);
-          expect(subject.successCallback).toHaveBeenCalled();
-          return expect(subject.errorCallback).toHaveBeenCalled();
+          return expect(subject.successCallback).toHaveBeenCalled();
         });
-        xit('should call runCallbacksFor with proper arguments', function() {
+        it('should call successCallback afterDestroy with no collection', function() {
+          delete subject.collection;
+          subject.destroy();
+          server.respond();
+          return expect(subject.successCallback).toHaveBeenCalled();
+        });
+        it('should call runCallbacksFor with proper arguments', function() {
           subject.destroy();
           server.respond();
           return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model);
         });
-        return xit('should call callbacksFor with proper arguments', function() {
+        return it('should call callbacksFor with proper arguments', function() {
           subject.destroy();
           server.respond();
           return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model);

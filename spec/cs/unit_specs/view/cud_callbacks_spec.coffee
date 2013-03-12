@@ -143,21 +143,19 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         expect(subject._afterSuccessfulUpdate.length).toEqual 1
         expect(subject._afterSuccessfulUpdate[0]).toEqual subject.successCallback
 
-      xit 'should call successCallback afterUpdate', ->
+      it 'should call successCallback afterUpdate', ->
         subject.update()
         server.respond()
         expect(subject.successCallback).toHaveBeenCalled()
-        expect(subject.errorCallback).toHaveBeenCalled()
 
-      xit 'should call runCallbacksFor with proper arguments', ->
+      it 'should call runCallbacksFor with proper arguments', ->
         subject.update()
         server.respond()
-        console.log server
         expect(subject._afterSuccessfulUpdate.length).toEqual 1
         expect(subject._afterSuccessfulUpdate[0]).toEqual subject.successCallback
         expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model)
 
-      xit 'should call callbacksFor with proper arguments', ->
+      it 'should call callbacksFor with proper arguments', ->
         subject.update()
         server.respond()
         expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulUpdate, subject.model)
@@ -165,12 +163,14 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
 
     describe 'afterDestroy', ->
       beforeEach ->
-        subject._afterSuccessfulDestroy =   []
-        subject._afterFailingDestroy =   []
+        subject.initializeCudContainers()
         spyOn(subject, 'afterDestroy').andCallThrough()
         spyOn(subject, 'runCallbacksFor').andCallThrough()
         subject.afterDestroy subject.successCallback
         subject.afterFailingDestroy subject.errorCallback
+        subject.model = new Sharkbone.App.Models.User(
+          id: 1, name: 'Foo', last_name: 'Bar'
+        )
 
       it 'should be called with a successCallback', ->
         expect(subject.afterDestroy).toHaveBeenCalled()
@@ -191,19 +191,23 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         expect(subject._afterSuccessfulDestroy.length).toEqual 1
         expect(subject._afterSuccessfulDestroy[0]).toEqual subject.successCallback
 
-      xit 'should call successCallback afterDestroy', ->
+      it 'should call successCallback afterDestroy', ->
         subject.destroy()
         server.respond()
-        console.log server
         expect(subject.successCallback).toHaveBeenCalled()
-        expect(subject.errorCallback).toHaveBeenCalled()
 
-      xit 'should call runCallbacksFor with proper arguments', ->
+      it 'should call successCallback afterDestroy with no collection', ->
+        delete subject.collection
+        subject.destroy()
+        server.respond()
+        expect(subject.successCallback).toHaveBeenCalled()
+
+      it 'should call runCallbacksFor with proper arguments', ->
         subject.destroy()
         server.respond()
         expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model)
 
-      xit 'should call callbacksFor with proper arguments', ->
+      it 'should call callbacksFor with proper arguments', ->
         subject.destroy()
         server.respond()
         expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model)

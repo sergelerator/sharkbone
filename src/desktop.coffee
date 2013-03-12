@@ -3,14 +3,8 @@ class Sharkbone.Desktop
 
   # The layouts of the application are defined here.
   layouts:
-    default:
-      main: () -> $("#app_container #main")
-      detail: () -> $("#app_container #detail")
-      menu: () -> $("#app_container #main_menu")
-      forms:
-        primary: () -> $("#app_container #primary_form")
-    login:
-      main: () -> $("#login_container #main")
+    default: {}
+    login: {}
 
   # The name of the currently active desktop layout.
   activeLayoutName: 'default'
