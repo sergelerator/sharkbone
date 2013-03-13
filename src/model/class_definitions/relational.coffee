@@ -24,8 +24,8 @@ Sharkbone.ClassModules.Relational =
       key: key
     })
     _.defaults(options, {
-      relatedModel: "#{@appNamespace()}Models.#{_.singularize(key).capitalize()}"
-      collectionType: "#{@appNamespace()}Collections.#{_.pluralize(key).capitalize()}"
+      relatedModel: "#{@appNamespace()}Models.#{_.singularize(key).camelize()}"
+      collectionType: "#{@appNamespace()}Collections.#{_.pluralize(key).camelize()}"
     })
     @::relations.push options
 
@@ -40,6 +40,6 @@ Sharkbone.ClassModules.Relational =
       key: key
     })
     _.defaults(options, {
-      relatedModel: "#{@appNamespace()}Models.#{_.singularize(key).capitalize()}"
+      relatedModel: "#{@appNamespace()}Models.#{_.singularize(key).camelize()}"
     })
     @::relations.push options
