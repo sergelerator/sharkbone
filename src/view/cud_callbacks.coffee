@@ -31,7 +31,7 @@ Sharkbone.Modules.CUDCallbacks =
     @_afterFailingDestroy =     []
 
   callbacksFor: (callbacksCollection, args) ->
-    _(callbacksCollection).each( (func) ->
+    _(callbacksCollection).each( (func) =>
       func.apply(@, args)
     )
     @
