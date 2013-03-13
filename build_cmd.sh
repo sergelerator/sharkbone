@@ -1,6 +1,7 @@
 coffee -j lib/sharkbone.js -c \
+  src/base_setup.coffee \
+  src/base/*.coffee \
   src/sharkbone.coffee \
-  src/string.coffee \
   src/mixin.coffee \
   src/shared.coffee \
   src/view_manager/*.coffee \
