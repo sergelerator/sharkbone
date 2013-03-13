@@ -201,6 +201,7 @@
           subject.initializeCudContainers();
           spyOn(subject, 'afterDestroy').andCallThrough();
           spyOn(subject, 'runCallbacksFor').andCallThrough();
+          subject.destroyConfirmation(true);
           subject.afterDestroy(subject.successCallback);
           subject.afterFailingDestroy(subject.errorCallback);
           return subject.model = new Sharkbone.App.Models.User({
@@ -242,10 +243,15 @@
           server.respond();
           return expect(subject.runCallbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model);
         });
-        return it('should call callbacksFor with proper arguments', function() {
+        it('should call callbacksFor with proper arguments', function() {
           subject.destroy();
           server.respond();
           return expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model);
+        });
+        return it('should not call destroy if confirmation is set to false', function() {
+          subject.destroyConfirmation(false);
+          subject.destroy();
+          return expect(subject.callbacksFor.calls.length).toEqual(0);
         });
       });
     });

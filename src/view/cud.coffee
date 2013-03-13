@@ -33,6 +33,7 @@ Sharkbone.Modules.CUD =
   destroy: (id = {}, options = {}) ->
     id.preventDefault?()
     id.stopPropagation?()
+    return @model unless @__destroyConfirmation()
     if id? and @collection? and (model = @collection.get(id))
       model.destroy({
         success: () => @runCallbacksFor(@_afterSuccessfulDestroy, @model)
@@ -50,3 +51,13 @@ Sharkbone.Modules.CUD =
   # The callback implementation lives in Sharkbone.Modules.CUDCallbacks
   runCallbacksFor: ->
     @callbacksFor?(arguments...)
+
+  # Registers a callback to be executed before the 'destroy' method, this callback should
+  # be able to return a Falsy or Truthy value. If it return a Truthy value, the destroy
+  # operation is performed, otherwise it is not
+  destroyConfirmation: (func) ->
+    @__destroyConfirmation = if typeof func is 'function' then func else -> func
+    @
+
+  # Default destroy confirmation
+  __destroyConfirmation: -> confirm('This is a destructive operation and it cannot be undone. Confirm?')

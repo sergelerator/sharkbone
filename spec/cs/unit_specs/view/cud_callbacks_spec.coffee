@@ -166,6 +166,7 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         subject.initializeCudContainers()
         spyOn(subject, 'afterDestroy').andCallThrough()
         spyOn(subject, 'runCallbacksFor').andCallThrough()
+        subject.destroyConfirmation true
         subject.afterDestroy subject.successCallback
         subject.afterFailingDestroy subject.errorCallback
         subject.model = new Sharkbone.App.Models.User(
@@ -211,6 +212,11 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
         subject.destroy()
         server.respond()
         expect(subject.callbacksFor).toHaveBeenCalledWith(subject._afterSuccessfulDestroy, subject.model)
+
+      it 'should not call destroy if confirmation is set to false', ->
+        subject.destroyConfirmation false
+        subject.destroy()
+        expect(subject.callbacksFor.calls.length).toEqual 0
 
   describe 'initializeDefaultCallbacks', ->
     beforeEach ->
