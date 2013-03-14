@@ -1,5 +1,4 @@
-./compress.sh \
-  lib/jquery-min.js \
+sh compressjs.sh \
   lib/underscore-min.js \
   lib/underscore.inflection.js \
   lib/backbone-min.js \
