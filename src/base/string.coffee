@@ -14,3 +14,7 @@ String.define 'army', (n) ->
   r.join("")
 String.define 'leftFill', (string, resultLength) ->
   ( string.army(resultLength) + @ ).slice(resultLength*(-1) )
+
+# String conversions
+String.define 'toInt', -> parseInt(@)
+String.define 'toF', -> parseFloat(@)
