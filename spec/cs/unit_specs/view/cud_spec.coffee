@@ -24,6 +24,7 @@ describe 'Sharkbone.Modules.CUD', ->
 
     # Register spies
     spyOn(subject.collection, 'create').andCallThrough()
+    spyOn(subject.collection, 'get').andCallThrough()
     spyOn(subject.collection, 'remove').andCallThrough()
     spyOn(subject.model, 'save').andCallThrough()
     spyOn(subject.model, 'destroy').andCallThrough()
@@ -132,6 +133,9 @@ describe 'Sharkbone.Modules.CUD', ->
       it 'should call destroy on model', ->
         expect(subject.model.destroy).toHaveBeenCalled()
 
+      it 'should call destroy on model only once', ->
+        expect(subject.model.destroy.calls.length).toEqual 1
+
     describe 'called with id', ->
       beforeEach ->
         subject.create()
@@ -141,6 +145,21 @@ describe 'Sharkbone.Modules.CUD', ->
 
       it 'should call destroy on model', ->
         expect(subject.model.destroy).toHaveBeenCalled()
+
+      it 'should call destroy on model only once', ->
+        expect(subject.model.destroy.calls.length).toEqual 1
+
+      it 'should call remove on the collection', ->
+        expect(subject.collection.remove).toHaveBeenCalled()
+
+      it 'should call remove on the collection only once', ->
+        expect(subject.collection.remove.calls.length).toEqual 1
+
+      it 'should call get on the collection', ->
+        expect(subject.collection.get).toHaveBeenCalled()
+
+      it 'should call get on the collection with id 1', ->
+        expect(subject.collection.get).toHaveBeenCalledWith 1
 
     describe 'called as event callback', ->
       beforeEach ->
@@ -157,3 +176,6 @@ describe 'Sharkbone.Modules.CUD', ->
 
       it 'should call destroy on subject.model', ->
         expect(subject.model.destroy).toHaveBeenCalled()
+
+      it 'should call destroy on model only once', ->
+        expect(subject.model.destroy.calls.length).toEqual 1

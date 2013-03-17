@@ -43,6 +43,7 @@
       subject.collection = new Sharkbone.App.Collections.Users();
       subject.model = new Sharkbone.App.Models.User();
       spyOn(subject.collection, 'create').andCallThrough();
+      spyOn(subject.collection, 'get').andCallThrough();
       spyOn(subject.collection, 'remove').andCallThrough();
       spyOn(subject.model, 'save').andCallThrough();
       spyOn(subject.model, 'destroy').andCallThrough();
@@ -157,8 +158,11 @@
           subject.destroy();
           return server.respond();
         });
-        return it('should call destroy on model', function() {
+        it('should call destroy on model', function() {
           return expect(subject.model.destroy).toHaveBeenCalled();
+        });
+        return it('should call destroy on model only once', function() {
+          return expect(subject.model.destroy.calls.length).toEqual(1);
         });
       });
       describe('called with id', function() {
@@ -168,8 +172,23 @@
           subject.destroy(1);
           return server.respond();
         });
-        return it('should call destroy on model', function() {
+        it('should call destroy on model', function() {
           return expect(subject.model.destroy).toHaveBeenCalled();
+        });
+        it('should call destroy on model only once', function() {
+          return expect(subject.model.destroy.calls.length).toEqual(1);
+        });
+        it('should call remove on the collection', function() {
+          return expect(subject.collection.remove).toHaveBeenCalled();
+        });
+        it('should call remove on the collection only once', function() {
+          return expect(subject.collection.remove.calls.length).toEqual(1);
+        });
+        it('should call get on the collection', function() {
+          return expect(subject.collection.get).toHaveBeenCalled();
+        });
+        return it('should call get on the collection with id 1', function() {
+          return expect(subject.collection.get).toHaveBeenCalledWith(1);
         });
       });
       return describe('called as event callback', function() {
@@ -189,8 +208,11 @@
         it('should stop propagation', function() {
           return expect(options.stopPropagation).toHaveBeenCalled();
         });
-        return it('should call destroy on subject.model', function() {
+        it('should call destroy on subject.model', function() {
           return expect(subject.model.destroy).toHaveBeenCalled();
+        });
+        return it('should call destroy on model only once', function() {
+          return expect(subject.model.destroy.calls.length).toEqual(1);
         });
       });
     });

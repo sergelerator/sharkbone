@@ -15,36 +15,34 @@ Sharkbone.Modules.CUD =
   create: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
-    @collection.create(@model, {
+    @collection.create(@model, _({
       success: () => @runCallbacksFor(@_afterSuccessfulCreate, @model)
       error: () => @runCallbacksFor(@_afterFailingCreate, @model)
-    })
+    }).defaults(options))
 
   # Attempts to update the model stored in @model
   update: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
-    @model.save(undefined, {
+    @model.save(undefined, _({
       success: () => @runCallbacksFor(@_afterSuccessfulUpdate, @model)
       error: () => @runCallbacksFor(@_afterFailingUpdate, @model)
-    })
+    }).defaults(options))
 
   # Attempts to destroy a model specified whether by a provided 'id' or the View's @model.
   destroy: (id = {}, options = {}) ->
     id.preventDefault?()
     id.stopPropagation?()
     return @model unless @__destroyConfirmation()
+    options = _({
+      success: () => @runCallbacksFor(@_afterSuccessfulDestroy, @model)
+      error: () => @runCallbacksFor(@_afterFailingDestroy, @model)
+    }).defaults(options)
     if id? and @collection? and (model = @collection.get(id))
-      model.destroy({
-        success: () => @runCallbacksFor(@_afterSuccessfulDestroy, @model)
-        error: () => @runCallbacksFor(@_afterFailingDestroy, @model)
-      })
+      model.destroy(options)
       @collection.remove(@collection.get(id))
     else if @model?
-      @model.destroy({
-        success: () => @runCallbacksFor(@_afterSuccessfulDestroy, @model)
-        error: () => @runCallbacksFor(@_afterFailingDestroy, @model)
-      })
+      @model.destroy(options)
     else throw new Error('Missing reference for destroying an object, forgot to supply an ID?')
 
   # The callback runner checks if callbacks are enabled and runs them.
