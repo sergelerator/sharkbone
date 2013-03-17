@@ -106,7 +106,7 @@
         });
       });
     });
-    return describe('update', function() {
+    describe('update', function() {
       beforeEach(function() {
         return spyOn(subject, 'update').andCallThrough();
       });
@@ -141,6 +141,56 @@
         });
         return it('should stop propagation', function() {
           return expect(options.stopPropagation).toHaveBeenCalled();
+        });
+      });
+    });
+    return describe('destroy', function() {
+      beforeEach(function() {
+        spyOn(subject, 'destroy').andCallThrough();
+        return subject.destroyConfirmation(true);
+      });
+      it('should be defined', function() {
+        return expect(subject.destroy).toBeDefined();
+      });
+      describe('called without options', function() {
+        beforeEach(function() {
+          subject.destroy();
+          return server.respond();
+        });
+        return it('should call destroy on model', function() {
+          return expect(subject.model.destroy).toHaveBeenCalled();
+        });
+      });
+      describe('called with id', function() {
+        beforeEach(function() {
+          subject.create();
+          subject.collection.add(subject.model);
+          subject.destroy(1);
+          return server.respond();
+        });
+        return it('should call destroy on model', function() {
+          return expect(subject.model.destroy).toHaveBeenCalled();
+        });
+      });
+      return describe('called as event callback', function() {
+        beforeEach(function() {
+          options.preventDefault = jasmine.createSpy('preventDefault').andCallFake(function() {
+            return null;
+          });
+          options.stopPropagation = jasmine.createSpy('stopPropagation').andCallFake(function() {
+            return null;
+          });
+          subject.destroy(options);
+          return server.respond();
+        });
+        it('should prevent default event', function() {
+          return expect(options.preventDefault).toHaveBeenCalled();
+        });
+        it('should stop propagation', function() {
+          return expect(options.stopPropagation).toHaveBeenCalled();
+        });
+        return it('should call destroy on subject.model', function() {
+          return expect(subject.model.destroy).toHaveBeenCalled();
         });
       });
     });

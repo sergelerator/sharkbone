@@ -113,3 +113,47 @@ describe 'Sharkbone.Modules.CUD', ->
 
       it 'should stop propagation', ->
         expect(options.stopPropagation).toHaveBeenCalled()
+
+  describe 'destroy', ->
+    beforeEach ->
+      # Register spies
+      spyOn(subject, 'destroy').andCallThrough()
+
+      subject.destroyConfirmation true
+
+    it 'should be defined', ->
+      expect(subject.destroy).toBeDefined()
+
+    describe 'called without options', ->
+      beforeEach ->
+        subject.destroy()
+        server.respond()
+
+      it 'should call destroy on model', ->
+        expect(subject.model.destroy).toHaveBeenCalled()
+
+    describe 'called with id', ->
+      beforeEach ->
+        subject.create()
+        subject.collection.add subject.model
+        subject.destroy(1)
+        server.respond()
+
+      it 'should call destroy on model', ->
+        expect(subject.model.destroy).toHaveBeenCalled()
+
+    describe 'called as event callback', ->
+      beforeEach ->
+        options.preventDefault = jasmine.createSpy('preventDefault').andCallFake -> null
+        options.stopPropagation = jasmine.createSpy('stopPropagation').andCallFake -> null
+        subject.destroy options
+        server.respond()
+
+      it 'should prevent default event', ->
+        expect(options.preventDefault).toHaveBeenCalled()
+
+      it 'should stop propagation', ->
+        expect(options.stopPropagation).toHaveBeenCalled()
+
+      it 'should call destroy on subject.model', ->
+        expect(subject.model.destroy).toHaveBeenCalled()
