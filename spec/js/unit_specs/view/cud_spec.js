@@ -43,6 +43,9 @@
       subject.collection = new Sharkbone.App.Collections.Users();
       subject.model = new Sharkbone.App.Models.User();
       spyOn(subject.collection, 'create').andCallThrough();
+      spyOn(subject.collection, 'remove').andCallThrough();
+      spyOn(subject.model, 'save').andCallThrough();
+      spyOn(subject.model, 'destroy').andCallThrough();
       server.respondWith('POST', 'users', [
         201, {
           'Content-Tpye': 'application/json'
@@ -65,7 +68,7 @@
     it('should be defined', function() {
       return expect(subject).toBeDefined();
     });
-    return describe('create', function() {
+    describe('create', function() {
       beforeEach(function() {
         return spyOn(subject, 'create').andCallThrough();
       });
@@ -93,6 +96,44 @@
             return null;
           });
           subject.create(options);
+          return server.respond();
+        });
+        it('should prevent default event', function() {
+          return expect(options.preventDefault).toHaveBeenCalled();
+        });
+        return it('should stop propagation', function() {
+          return expect(options.stopPropagation).toHaveBeenCalled();
+        });
+      });
+    });
+    return describe('update', function() {
+      beforeEach(function() {
+        return spyOn(subject, 'update').andCallThrough();
+      });
+      it('should be defined', function() {
+        return expect(subject.update).toBeDefined();
+      });
+      describe('called without options', function() {
+        beforeEach(function() {
+          subject.update();
+          return server.respond();
+        });
+        it('should call save on model', function() {
+          return expect(subject.model.save).toHaveBeenCalled();
+        });
+        return it('should call create on collection with model', function() {
+          return expect(subject.model.save.calls[0].args[0]).toEqual(void 0);
+        });
+      });
+      return describe('called as event callback', function() {
+        beforeEach(function() {
+          options.preventDefault = jasmine.createSpy('preventDefault').andCallFake(function() {
+            return null;
+          });
+          options.stopPropagation = jasmine.createSpy('stopPropagation').andCallFake(function() {
+            return null;
+          });
+          subject.update(options);
           return server.respond();
         });
         it('should prevent default event', function() {

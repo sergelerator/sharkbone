@@ -24,6 +24,9 @@ describe 'Sharkbone.Modules.CUD', ->
 
     # Register spies
     spyOn(subject.collection, 'create').andCallThrough()
+    spyOn(subject.collection, 'remove').andCallThrough()
+    spyOn(subject.model, 'save').andCallThrough()
+    spyOn(subject.model, 'destroy').andCallThrough()
 
     # Set up server responses
     server.respondWith('POST', 'users',
@@ -70,6 +73,39 @@ describe 'Sharkbone.Modules.CUD', ->
         options.preventDefault = jasmine.createSpy('preventDefault').andCallFake -> null
         options.stopPropagation = jasmine.createSpy('stopPropagation').andCallFake -> null
         subject.create options
+        server.respond()
+
+      it 'should prevent default event', ->
+        expect(options.preventDefault).toHaveBeenCalled()
+
+      it 'should stop propagation', ->
+        expect(options.stopPropagation).toHaveBeenCalled()
+
+  describe 'update', ->
+    beforeEach ->
+      # Register spies
+      spyOn(subject, 'update').andCallThrough()
+
+    it 'should be defined', ->
+      expect(subject.update).toBeDefined()
+
+    describe 'called without options', ->
+      beforeEach ->
+        subject.update()
+        server.respond()
+
+      it 'should call save on model', ->
+        expect(subject.model.save).toHaveBeenCalled()
+
+      it 'should call create on collection with model', ->
+        expect(subject.model.save.calls[0].args[0]).toEqual undefined
+
+
+    describe 'called as event callback', ->
+      beforeEach ->
+        options.preventDefault = jasmine.createSpy('preventDefault').andCallFake -> null
+        options.stopPropagation = jasmine.createSpy('stopPropagation').andCallFake -> null
+        subject.update options
         server.respond()
 
       it 'should prevent default event', ->
