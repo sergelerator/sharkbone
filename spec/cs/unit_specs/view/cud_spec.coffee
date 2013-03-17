@@ -179,3 +179,12 @@ describe 'Sharkbone.Modules.CUD', ->
 
       it 'should call destroy on model only once', ->
         expect(subject.model.destroy.calls.length).toEqual 1
+
+  describe 'runCallbacksFor', ->
+    it 'should be defined', ->
+      expect(subject.runCallbacksFor).toBeDefined()
+
+    it 'should call callbacksFor', ->
+      subject.callbacksFor = jasmine.createSpy('callbacksFor').andCallFake -> null
+      subject.runCallbacksFor()
+      expect(subject.callbacksFor).toHaveBeenCalled()
