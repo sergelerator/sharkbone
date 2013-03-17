@@ -76,6 +76,8 @@
 
         })(Sharkbone.Collection);
         Sharkbone.App.Models.User.setup();
+        subject.collection = new Sharkbone.App.Collections.Users();
+        subject.model = new Sharkbone.App.Models.User();
         spyOn(subject, 'registerCallback').andCallThrough();
         spyOn(subject, 'registerCallbacks').andCallThrough();
         spyOn(subject, 'callbacksFor').andCallThrough();
@@ -84,12 +86,6 @@
         });
         subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake(function() {
           return null;
-        });
-        subject.collection = new Sharkbone.App.Collections.Users();
-        subject.model = new Sharkbone.App.Models.User();
-        subject.model.set({
-          name: 'John',
-          last_name: 'Doe'
         });
         _(subject).extend(Sharkbone.Modules.CUD);
         server.respondWith('POST', 'users', [

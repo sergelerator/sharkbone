@@ -39,6 +39,7 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
 
   describe 'callbacks', ->
     beforeEach ->
+      # Define the dummy collection and model
       class Sharkbone.App.Models.User extends Sharkbone.Model
         urlRoot: 'users'
 
@@ -48,16 +49,22 @@ describe 'Sharkbone.Modules.CUDCallbacks', ->
 
       Sharkbone.App.Models.User.setup()
 
+      # Instantiate collection and model
+      subject.collection = new Sharkbone.App.Collections.Users()
+      subject.model = new Sharkbone.App.Models.User()
+      #subject.model.set name: 'John', last_name: 'Doe'
+
+      # Register spies
       spyOn(subject, 'registerCallback').andCallThrough()
       spyOn(subject, 'registerCallbacks').andCallThrough()
       spyOn(subject, 'callbacksFor').andCallThrough()
       subject.successCallback = jasmine.createSpy('successCallback').andCallFake () -> return null
       subject.errorCallback = jasmine.createSpy('errorCallback').andCallFake () -> return null
-      subject.collection = new Sharkbone.App.Collections.Users()
-      subject.model = new Sharkbone.App.Models.User()
-      subject.model.set name: 'John', last_name: 'Doe'
+
+      # Extend required CUD module
       _(subject).extend Sharkbone.Modules.CUD
 
+      # Set up server responses
       server.respondWith('POST', 'users',
         [201, {'Content-Tpye': 'application/json'},
         '{"id": 1, "name": "John", "last_name": "Doe"}']
