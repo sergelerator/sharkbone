@@ -184,7 +184,11 @@ describe 'Sharkbone.Modules.CUD', ->
     it 'should be defined', ->
       expect(subject.runCallbacksFor).toBeDefined()
 
-    it 'should call callbacksFor', ->
-      subject.callbacksFor = jasmine.createSpy('callbacksFor').andCallFake -> null
-      subject.runCallbacksFor()
-      expect(subject.callbacksFor).toHaveBeenCalled()
+  describe 'destroyConfirmation', ->
+    it 'should be defined', ->
+      expect(subject.destroyConfirmation).toBeDefined()
+
+    it 'should register a destroyConfirmation', ->
+      dcf = jasmine.createSpy('dcf').andCallFake -> null
+      subject.destroyConfirmation dcf
+      expect(subject.__destroyConfirmation).toEqual dcf

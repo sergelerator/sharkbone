@@ -145,7 +145,7 @@
         });
       });
     });
-    return describe('destroy', function() {
+    describe('destroy', function() {
       beforeEach(function() {
         spyOn(subject, 'destroy').andCallThrough();
         return subject.destroyConfirmation(true);
@@ -214,6 +214,24 @@
         return it('should call destroy on model only once', function() {
           return expect(subject.model.destroy.calls.length).toEqual(1);
         });
+      });
+    });
+    describe('runCallbacksFor', function() {
+      return it('should be defined', function() {
+        return expect(subject.runCallbacksFor).toBeDefined();
+      });
+    });
+    return describe('destroyConfirmation', function() {
+      it('should be defined', function() {
+        return expect(subject.destroyConfirmation).toBeDefined();
+      });
+      return it('should register a destroyConfirmation', function() {
+        var dcf;
+        dcf = jasmine.createSpy('dcf').andCallFake(function() {
+          return null;
+        });
+        subject.destroyConfirmation(dcf);
+        return expect(subject.__destroyConfirmation).toEqual(dcf);
       });
     });
   });
