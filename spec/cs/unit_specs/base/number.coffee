@@ -108,3 +108,27 @@ describe 'Number', ->
     it 'should properly multiply two Float values', ->
       a = 2.5
       expect(a.by 2.5).toBeCloseTo 6.25, 4
+
+  describe 'divideBy', ->
+    beforeEach ->
+      subject = subject::divideBy
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'should properly divide by the provided value', ->
+      a = 8
+      expect(a.divideBy 4).toEqual 2
+
+    it 'should properly divide a Float by an Int', ->
+      a = 4.50
+      expect(a.divideBy 2).toBeCloseTo 2.25, 4
+
+    it 'should properly divide an Int by a Float', ->
+      [a, b] = [3, 9]
+      expect(a.divideBy 1.5).toBeCloseTo 2, 4
+      expect(b.divideBy 3.5).toBeCloseTo 2.5714, 4
+
+    it 'should properly divide two Float values', ->
+      a = 14.5
+      expect(a.divideBy 3.4).toBeCloseTo 4.2647, 4

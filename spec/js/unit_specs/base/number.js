@@ -105,7 +105,7 @@
         return expect(a.minus(2.35)).toBeCloseTo(1.88, 4);
       });
     });
-    return describe('by', function() {
+    describe('by', function() {
       beforeEach(function() {
         return subject = subject.prototype.by;
       });
@@ -131,6 +131,35 @@
         var a;
         a = 2.5;
         return expect(a.by(2.5)).toBeCloseTo(6.25, 4);
+      });
+    });
+    return describe('divideBy', function() {
+      beforeEach(function() {
+        return subject = subject.prototype.divideBy;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('should properly divide by the provided value', function() {
+        var a;
+        a = 8;
+        return expect(a.divideBy(4)).toEqual(2);
+      });
+      it('should properly divide a Float by an Int', function() {
+        var a;
+        a = 4.50;
+        return expect(a.divideBy(2)).toBeCloseTo(2.25, 4);
+      });
+      it('should properly divide an Int by a Float', function() {
+        var a, b, _ref;
+        _ref = [3, 9], a = _ref[0], b = _ref[1];
+        expect(a.divideBy(1.5)).toBeCloseTo(2, 4);
+        return expect(b.divideBy(3.5)).toBeCloseTo(2.5714, 4);
+      });
+      return it('should properly divide two Float values', function() {
+        var a;
+        a = 14.5;
+        return expect(a.divideBy(3.4)).toBeCloseTo(4.2647, 4);
       });
     });
   });
