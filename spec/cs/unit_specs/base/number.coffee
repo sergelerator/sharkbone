@@ -85,3 +85,26 @@ describe 'Number', ->
     it 'should properly substract a Float from a Float value', ->
       a = 4.23
       expect(a.minus 2.35).toBeCloseTo 1.88, 4
+
+  describe 'by', ->
+    beforeEach ->
+      subject = subject::by
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'should properly multiply by the provided value', ->
+      a = 4
+      expect(a.by 8).toEqual 32
+
+    it 'should properly multiply a Float by an Int', ->
+      a = 4.50
+      expect(a.by 4).toBeCloseTo 18, 4
+
+    it 'should properly multiply an Int by a Float', ->
+      a = 4
+      expect(a.by 3.2).toBeCloseTo 12.8, 4
+
+    it 'should properly multiply two Float values', ->
+      a = 2.5
+      expect(a.by 2.5).toBeCloseTo 6.25, 4
