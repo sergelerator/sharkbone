@@ -1,4 +1,4 @@
-Number::errVal = undefined
+Number::errVal = NaN
 Number.define 'toInt', -> parseInt(@)
 Number.define 'toF', -> parseFloat(@)
 Number.define 'plus', (x) -> if (f = @toF() + x.toF()) then f else @errVal
