@@ -49,7 +49,7 @@
         return expect(a.toF()).toEqual(4.44);
       });
     });
-    return describe('plus', function() {
+    describe('plus', function() {
       beforeEach(function() {
         return subject = subject.prototype.plus;
       });
@@ -75,6 +75,34 @@
         var a;
         a = 4.23;
         return expect(a.plus(4.35)).toBeCloseTo(8.58, 4);
+      });
+    });
+    return describe('minus', function() {
+      beforeEach(function() {
+        return subject = subject.prototype.minus;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('should properly substract the provided value to self', function() {
+        var a;
+        a = 4;
+        return expect(a.minus(2)).toEqual(2);
+      });
+      it('should properly substract an Int from a Float value', function() {
+        var a;
+        a = 4.44;
+        return expect(a.minus(1)).toBeCloseTo(3.44, 4);
+      });
+      it('should properly substract a Float from an Int value', function() {
+        var a;
+        a = 4;
+        return expect(a.minus(1.35)).toBeCloseTo(2.65, 4);
+      });
+      return it('should properly substract a Float from a Float value', function() {
+        var a;
+        a = 4.23;
+        return expect(a.minus(2.35)).toBeCloseTo(1.88, 4);
       });
     });
   });

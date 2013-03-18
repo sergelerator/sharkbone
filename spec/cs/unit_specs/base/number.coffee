@@ -62,3 +62,26 @@ describe 'Number', ->
     it 'should properly sum two Float values', ->
       a = 4.23
       expect(a.plus 4.35).toBeCloseTo 8.58, 4
+
+  describe 'minus', ->
+    beforeEach ->
+      subject = subject::minus
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'should properly substract the provided value to self', ->
+      a = 4
+      expect(a.minus 2).toEqual 2
+
+    it 'should properly substract an Int from a Float value', ->
+      a = 4.44
+      expect(a.minus 1).toBeCloseTo 3.44, 4
+
+    it 'should properly substract a Float from an Int value', ->
+      a = 4
+      expect(a.minus 1.35).toBeCloseTo 2.65, 4
+
+    it 'should properly substract a Float from a Float value', ->
+      a = 4.23
+      expect(a.minus 2.35).toBeCloseTo 1.88, 4
