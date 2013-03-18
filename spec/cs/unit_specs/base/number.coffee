@@ -1,5 +1,6 @@
 describe 'Number', ->
   subject = null
+  [odd, even, dec] = [null, null, null]
 
   beforeEach ->
     subject = Number
@@ -132,3 +133,37 @@ describe 'Number', ->
     it 'should properly divide two Float values', ->
       a = 14.5
       expect(a.divideBy 3.4).toBeCloseTo 4.2647, 4
+
+  describe 'isOdd', ->
+    beforeEach ->
+      subject = subject::isOdd
+      [odd, even, dec] = [3, 4, 5.6]
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it '3 should be odd', ->
+      expect(odd.isOdd()).toBeTruthy()
+
+    it '4 should not be odd', ->
+      expect(even.isOdd()).toBeFalsy()
+
+    it '5.6 should be odd', ->
+      expect(dec.isOdd()).toBeTruthy()
+
+  describe 'isEven', ->
+    beforeEach ->
+      subject = subject::isEven
+      [odd, even, dec] = [3, 4, 5.6]
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it '3 should not be even', ->
+      expect(odd.isEven()).toBeFalsy()
+
+    it '4 should be even', ->
+      expect(even.isEven()).toBeTruthy()
+
+    it '5.6 should not be even', ->
+      expect(dec.isEven()).toBeFalsy()

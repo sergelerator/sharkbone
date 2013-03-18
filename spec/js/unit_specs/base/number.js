@@ -2,8 +2,9 @@
 (function() {
 
   describe('Number', function() {
-    var subject;
+    var dec, even, odd, subject, _ref;
     subject = null;
+    _ref = [null, null, null], odd = _ref[0], even = _ref[1], dec = _ref[2];
     beforeEach(function() {
       return subject = Number;
     });
@@ -133,7 +134,7 @@
         return expect(a.by(2.5)).toBeCloseTo(6.25, 4);
       });
     });
-    return describe('divideBy', function() {
+    describe('divideBy', function() {
       beforeEach(function() {
         return subject = subject.prototype.divideBy;
       });
@@ -151,8 +152,8 @@
         return expect(a.divideBy(2)).toBeCloseTo(2.25, 4);
       });
       it('should properly divide an Int by a Float', function() {
-        var a, b, _ref;
-        _ref = [3, 9], a = _ref[0], b = _ref[1];
+        var a, b, _ref1;
+        _ref1 = [3, 9], a = _ref1[0], b = _ref1[1];
         expect(a.divideBy(1.5)).toBeCloseTo(2, 4);
         return expect(b.divideBy(3.5)).toBeCloseTo(2.5714, 4);
       });
@@ -160,6 +161,44 @@
         var a;
         a = 14.5;
         return expect(a.divideBy(3.4)).toBeCloseTo(4.2647, 4);
+      });
+    });
+    describe('isOdd', function() {
+      beforeEach(function() {
+        var _ref1;
+        subject = subject.prototype.isOdd;
+        return _ref1 = [3, 4, 5.6], odd = _ref1[0], even = _ref1[1], dec = _ref1[2], _ref1;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('3 should be odd', function() {
+        return expect(odd.isOdd()).toBeTruthy();
+      });
+      it('4 should not be odd', function() {
+        return expect(even.isOdd()).toBeFalsy();
+      });
+      return it('5.6 should be odd', function() {
+        return expect(dec.isOdd()).toBeTruthy();
+      });
+    });
+    return describe('isEven', function() {
+      beforeEach(function() {
+        var _ref1;
+        subject = subject.prototype.isEven;
+        return _ref1 = [3, 4, 5.6], odd = _ref1[0], even = _ref1[1], dec = _ref1[2], _ref1;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('3 should not be even', function() {
+        return expect(odd.isEven()).toBeFalsy();
+      });
+      it('4 should be even', function() {
+        return expect(even.isEven()).toBeTruthy();
+      });
+      return it('5.6 should not be even', function() {
+        return expect(dec.isEven()).toBeFalsy();
       });
     });
   });
