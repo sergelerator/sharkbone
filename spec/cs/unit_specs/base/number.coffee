@@ -39,3 +39,26 @@ describe 'Number', ->
     it 'should return itself  when called from a Float', ->
       a = 4.44
       expect(a.toF()).toEqual 4.44
+
+  describe 'plus', ->
+    beforeEach ->
+      subject = subject::plus
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'should properly sum the provided value to self', ->
+      a = 4
+      expect(a.plus 8).toEqual 12
+
+    it 'should properly sum a Float and an Int value', ->
+      a = 4.44
+      expect(a.plus 4).toBeCloseTo 8.44, 4
+
+    it 'should properly sum an Int and a Float value', ->
+      a = 4
+      expect(a.plus 4.35).toBeCloseTo 8.35, 4
+
+    it 'should properly sum two Float values', ->
+      a = 4.23
+      expect(a.plus 4.35).toBeCloseTo 8.58, 4

@@ -31,7 +31,7 @@
         return expect(a.toInt()).toEqual(4);
       });
     });
-    return describe('toF', function() {
+    describe('toF', function() {
       beforeEach(function() {
         return subject = subject.prototype.toF;
       });
@@ -47,6 +47,34 @@
         var a;
         a = 4.44;
         return expect(a.toF()).toEqual(4.44);
+      });
+    });
+    return describe('plus', function() {
+      beforeEach(function() {
+        return subject = subject.prototype.plus;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('should properly sum the provided value to self', function() {
+        var a;
+        a = 4;
+        return expect(a.plus(8)).toEqual(12);
+      });
+      it('should properly sum a Float and an Int value', function() {
+        var a;
+        a = 4.44;
+        return expect(a.plus(4)).toBeCloseTo(8.44, 4);
+      });
+      it('should properly sum an Int and a Float value', function() {
+        var a;
+        a = 4;
+        return expect(a.plus(4.35)).toBeCloseTo(8.35, 4);
+      });
+      return it('should properly sum two Float values', function() {
+        var a;
+        a = 4.23;
+        return expect(a.plus(4.35)).toBeCloseTo(8.58, 4);
       });
     });
   });
