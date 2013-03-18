@@ -3,12 +3,51 @@
 
   describe('Number', function() {
     var subject;
-    subject = Number;
+    subject = null;
+    beforeEach(function() {
+      return subject = Number;
+    });
     it('should be able to define methods', function() {
       return expect(subject.define).toBeDefined();
     });
-    return it('should have an errVal property', function() {
+    it('should have an errVal property', function() {
       return expect(subject.prototype.errVal).toBeDefined();
+    });
+    describe('toInt', function() {
+      beforeEach(function() {
+        return subject = subject.prototype.toInt;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('should return itself when called from an Int', function() {
+        var a;
+        a = 4;
+        return expect(a.toInt()).toEqual(4);
+      });
+      return it('should strip the decimal part when called from a Float', function() {
+        var a;
+        a = 4.44;
+        return expect(a.toInt()).toEqual(4);
+      });
+    });
+    return describe('toF', function() {
+      beforeEach(function() {
+        return subject = subject.prototype.toF;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('should return itself when called from an Int', function() {
+        var a;
+        a = 4;
+        return expect(a.toF()).toEqual(4);
+      });
+      return it('should return itself  when called from a Float', function() {
+        var a;
+        a = 4.44;
+        return expect(a.toF()).toEqual(4.44);
+      });
     });
   });
 
