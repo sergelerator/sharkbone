@@ -5,7 +5,7 @@
 # defines some handy methods to render model and collection data to the screen. It follows
 # Backbone's convention of returning 'this' to allow chained calls.
 #==================================================================================================
-class Sharkbone.Modules.Render
+Sharkbone.Modules.Render =
 
   #================================================================================================
   # Default options

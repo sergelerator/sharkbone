@@ -5,7 +5,7 @@
 # handlers use the Backbone.Paginator API, you need to implement your own pagination system if
 # using that library does not please/suit you.
 #==================================================================================================
-class Sharkbone.Modules.PaginationControls
+Sharkbone.Modules.PaginationControls =
 
   # Default handler for the prev-page event
   requestPreviousPage: (e) ->
