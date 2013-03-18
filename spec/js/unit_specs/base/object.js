@@ -4,8 +4,8 @@
   describe('Object extensions', function() {
     var subject;
     subject = Object;
-    return it('should be able to addMethod', function() {
-      return expect(subject.addMethod).toBeDefined();
+    return it('should be able to define methods', function() {
+      return expect(subject.define).toBeDefined();
     });
   });
 
