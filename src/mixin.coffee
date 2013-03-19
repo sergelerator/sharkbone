@@ -16,5 +16,5 @@ class Sharkbone.Mixin
     _.each(Object.keys(proto), (key) =>
       @::[key] = proto[key] if key not in @mixinCallbacks
     )
-    proto.included?.apply(@, proto)
+    proto.included?.apply(@::, proto)
     @
