@@ -15,6 +15,7 @@ Sharkbone.Modules.CUD =
   create: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
+    options = {} if options.originalEvent?
     @collection.create(@model, _({
       success: () => @runCallbacksFor(@_afterSuccessfulCreate, @model)
       error: () => @runCallbacksFor(@_afterFailingCreate, @model)
@@ -24,6 +25,7 @@ Sharkbone.Modules.CUD =
   update: (options = {}) ->
     options.preventDefault?()
     options.stopPropagation?()
+    options = {} if options.originalEvent?
     @model.save(undefined, _({
       success: () => @runCallbacksFor(@_afterSuccessfulUpdate, @model)
       error: () => @runCallbacksFor(@_afterFailingUpdate, @model)

@@ -18,3 +18,6 @@ String.define 'leftFill', (string, resultLength) ->
 # String conversions
 String.define 'toInt', -> parseInt(@)
 String.define 'toF', -> parseFloat(@)
+
+# Boolean queries
+String.define 'isBlank', -> @trim().length == 0
