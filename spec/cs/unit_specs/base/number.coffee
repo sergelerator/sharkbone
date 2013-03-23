@@ -167,3 +167,19 @@ describe 'Number', ->
 
     it '5.6 should not be even', ->
       expect(dec.isEven()).toBeFalsy()
+
+  describe 'absolute', ->
+    beforeEach ->
+      subject = subject::absolute
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 3 should be 3', ->
+      expect((3).absolute()).toEqual 3
+
+    it 'of -54 should be 54', ->
+      expect((-54).absolute()).toEqual 54
+
+    it 'of 0 to be 0', ->
+      expect((0).absolute()).toEqual 0
