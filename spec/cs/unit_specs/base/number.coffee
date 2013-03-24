@@ -240,3 +240,19 @@ describe 'Number', ->
 
     it 'of 0 should return 0', ->
       expect((0).floor()).toEqual 0
+
+  describe 'next', ->
+    beforeEach ->
+      subject = subject::next
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 0 should be 1', ->
+      expect((0).next()).toEqual 1
+
+    it 'of 2.45 should be 3.45', ->
+      expect((2.45).next()).toEqual 3.45
+
+    it 'of -6 should return -5', ->
+      expect((-6).next()).toEqual -5

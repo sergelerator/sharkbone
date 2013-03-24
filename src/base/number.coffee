@@ -11,3 +11,4 @@ Number.define 'absolute', -> if @ < 0 then @.by(-1) else @
 Number.define 'absoluteIncrement', (x = 1) -> if @ < 0 then @.minus(x) else @.plus(x)
 Number.define 'ceil', -> if @ > @toInt() then @toInt().absoluteIncrement() else @
 Number.define 'floor', -> @toInt()
+Number.define 'next', -> @ + 1

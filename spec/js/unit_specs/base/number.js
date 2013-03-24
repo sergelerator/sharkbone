@@ -258,7 +258,7 @@
         return expect(0..ceil()).toEqual(0);
       });
     });
-    return describe('floor', function() {
+    describe('floor', function() {
       beforeEach(function() {
         return subject = subject.prototype.floor;
       });
@@ -276,6 +276,23 @@
       });
       return it('of 0 should return 0', function() {
         return expect(0..floor()).toEqual(0);
+      });
+    });
+    return describe('next', function() {
+      beforeEach(function() {
+        return subject = subject.prototype.next;
+      });
+      it('should be defined', function() {
+        return expect(subject).toBeDefined();
+      });
+      it('of 0 should be 1', function() {
+        return expect(0..next()).toEqual(1);
+      });
+      it('of 2.45 should be 3.45', function() {
+        return expect(2.45.next()).toEqual(3.45);
+      });
+      return it('of -6 should return -5', function() {
+        return expect((-6).next()).toEqual(-5);
       });
     });
   });
