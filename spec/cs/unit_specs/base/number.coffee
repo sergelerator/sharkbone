@@ -167,3 +167,92 @@ describe 'Number', ->
 
     it '5.6 should not be even', ->
       expect(dec.isEven()).toBeFalsy()
+
+  describe 'absolute', ->
+    beforeEach ->
+      subject = subject::absolute
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 3 should be 3', ->
+      expect((3).absolute()).toEqual 3
+
+    it 'of -54 should be 54', ->
+      expect((-54).absolute()).toEqual 54
+
+    it 'of 0 to be 0', ->
+      expect((0).absolute()).toEqual 0
+
+  describe 'absoluteIncrement', ->
+    beforeEach ->
+      subject = subject::absoluteIncrement
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 3 should return 4', ->
+      expect((3).absoluteIncrement()).toEqual 4
+
+    it 'of 3 with argument 2 should return 5', ->
+      expect((3).absoluteIncrement(2)).toEqual 5
+
+    it 'of -54 should return -55', ->
+      expect((-54).absoluteIncrement()).toEqual -55
+
+    it 'of 0 should return 1', ->
+      expect((0).absoluteIncrement()).toEqual 1
+
+  describe 'ceil', ->
+    beforeEach ->
+      subject = subject::ceil
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 3 should return 3', ->
+      expect((3).ceil()).toEqual 3
+
+    it 'of 3.3 should return 4', ->
+      expect((3.3).ceil()).toEqual 4
+
+    xit 'of -5.6 should return -6', ->
+      expect((-5.6).ceil()).toEqual -6
+
+    it 'of 0 should return 0', ->
+      expect((0).ceil()).toEqual 0
+
+  describe 'floor', ->
+    beforeEach ->
+      subject = subject::floor
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 3 should return 3', ->
+      expect((3).floor()).toEqual 3
+
+    it 'of 3.3 should return 3', ->
+      expect((3.3).floor()).toEqual 3
+
+    it 'of -5.6 should return -5', ->
+      expect((-5.6).floor()).toEqual -5
+
+    it 'of 0 should return 0', ->
+      expect((0).floor()).toEqual 0
+
+  describe 'next', ->
+    beforeEach ->
+      subject = subject::next
+
+    it 'should be defined', ->
+      expect(subject).toBeDefined()
+
+    it 'of 0 should be 1', ->
+      expect((0).next()).toEqual 1
+
+    it 'of 2.45 should be 3.45', ->
+      expect((2.45).next()).toEqual 3.45
+
+    it 'of -6 should return -5', ->
+      expect((-6).next()).toEqual -5
