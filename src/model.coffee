@@ -10,9 +10,12 @@ class Sharkbone.Model extends (Backbone.RelationalModel || Backbone.Model)
 
   initialize: () ->
     super(arguments...)
+    options = arguments[1] || {}
+    options['fetch_collections'] ||= false
+
     @on('change:id', () => @setupRelations.apply(@)) if Backbone.RelationalModel?
     @setupRelations?()
-    @fetchCollections?()
+    @fetchCollections?() if options['fetch_collections']
 
   if Backbone.RelationalModel?
     @include Sharkbone.Modules.Relational
