@@ -90,17 +90,17 @@
         _(subject).extend(Sharkbone.Modules.CUD);
         server.respondWith('POST', 'users', [
           201, {
-            'Content-Tpye': 'application/json'
+            'Content-Type': 'application/json'
           }, '{"id": 1, "name": "John", "last_name": "Doe"}'
         ]);
         server.respondWith('PUT', 'users/1', [
           204, {
-            'Content-Tpye': 'application/json'
+            'Content-Type': 'application/json'
           }, ''
         ]);
         return server.respondWith('DELETE', 'users/1', [
           204, {
-            'Content-Tpye': 'application/json'
+            'Content-Type': 'application/json'
           }, ''
         ]);
       });
