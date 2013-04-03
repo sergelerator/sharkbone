@@ -31,16 +31,16 @@ describe 'Sharkbone.Modules.CUD', ->
 
     # Set up server responses
     server.respondWith('POST', 'users',
-      [201, {'Content-Tpye': 'application/json'},
+      [201, {'Content-Type': 'application/json'},
       '{"id": 1, "name": "John", "last_name": "Doe"}']
     )
 
     server.respondWith('PUT', 'users/1',
-      [204, {'Content-Tpye': 'application/json'}, '']
+      [204, {'Content-Type': 'application/json'}, '']
     )
 
     server.respondWith('DELETE', 'users/1',
-      [204, {'Content-Tpye': 'application/json'}, '']
+      [204, {'Content-Type': 'application/json'}, '']
     )
 
   afterEach ->
