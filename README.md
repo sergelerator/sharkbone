@@ -1,6 +1,8 @@
-# Sharkbone
+# Deprecated
 
-NOTE: The current version is still under development, chances are the first release is coming in the next few days...
+This project is deprecated and will receive no further updates.
+
+# Sharkbone
 
 Sharkbone was born from project needs for a controlled view managing system. It works on top of the popular javascript MVC framework BackboneJS, which means an application must be structured with BackboneJS in order to use Sharkbone.
 
